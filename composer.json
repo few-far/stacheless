@@ -1,0 +1,25 @@
+{
+    "name": "few-far/stacheless",
+    "autoload": {
+        "psr-4": {
+            "FewFar\\Stacheless\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Stacheless",
+            "description": "Stacheless addon"
+        },
+        "laravel": {
+            "providers": [
+                "FewFar\\Stacheless\\ServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "statamic/cms": "^3.2.32"
+    },
+    "require": {
+        "engageinteractive/laravel-config-provider": "^1.0"
+    }
+}
