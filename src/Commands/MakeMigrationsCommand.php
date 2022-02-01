@@ -4,6 +4,7 @@ namespace FewFar\Stacheless\Commands;
 
 use FewFar\Stacheless\Config;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
 class MakeMigrationsCommand extends Command
@@ -52,14 +53,19 @@ class MakeMigrationsCommand extends Command
         $timestamp = date('Y_m_d_His');
         $config = app(Config::class);
         $prefix = $config->get('table_prefix');
+        $migration_path = __DIR__ . '/../../migrations/';
 
-        foreach ($config->get('types') as $type => $options) {
-            $source = __DIR__."/../../migrations/create_statamic_{$type}_table.php";
-            $target = base_path('database/migrations/'."{$timestamp}_create_{$prefix}{$type}_table.php");
+        $this->info('Outputting migrations to database/migrations/');
+
+        foreach ($this->files->glob($migration_path . '*') as $source) {
+            $filename = str_replace('statamic_', $prefix, Str::after($source, $migration_path));
+            $target = base_path("database/migrations/{$timestamp}_" . $filename);
 
             if ($this->files->exists($target)) {
                 continue;
             }
+
+            $this->info('↳ ' . $filename);
 
             $this->files->copy($source, $target);
         }

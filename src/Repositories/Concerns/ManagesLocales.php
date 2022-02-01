@@ -21,4 +21,12 @@ trait ManagesLocales
             'site' => $type->locale(),
         ];
     }
+
+    protected function hydrateModel($model, $type)
+    {
+        return $model->fill([
+            'site' => $type->locale(),
+            'yaml' => $type->fileContents(),
+        ]);
+    }
 }

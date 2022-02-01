@@ -39,16 +39,16 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
 
         $this->loadVariables($type);
 
-        return dd($type);
+        return $type;
     }
 
     protected function loadVariables($global)
     {
         $this->config->get("types.global_sets.variables_model")::query()
-            ->where('handle', $key)
+            ->where('handle', $global->handle())
             ->get()
             ->each(function ($model) use ($global) {
-                $variables = $global->makeLocalization($model->locale);
+                $variables = $global->makeLocalization($model->site);
 
                 $variables->data($data = YAML::parse($model->yaml));
 
@@ -56,7 +56,7 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
                     $variables->origin($origin);
                 }
 
-                $global->makeLocalization($variables);
+                $global->addLocalization($variables);
             });
     }
 
@@ -88,24 +88,28 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
         return $this->findWithCache($handle);
     }
 
-    // todo: make findModel load them all for the handle
+    protected function saveVariables(Variables $variables)
+    {
+        $model = $this->config->get("types.global_sets.variables_model")::query()
+            ->firstOrNew([
+                'handle' => $variables->handle(),
+                'site' => $variables->locale(),
+            ]);
+
+        $this->hydrateModel($model, $variables);
+
+        $this->saveModel($model);
+    }
 
     public function save($global)
     {
         parent::save($global);
 
+        Site::all()
+            ->map->handle()
+            ->filter(fn ($site) => $global->existsIn($site))
+            ->each(fn ($site) => $this->saveVariables($global->in($site)));
+
         return true;
-
-        // throw new \Exception('Not implemented');
-
-        // Site::all()->each(function ($site) use ($set) {
-        //     $handle = $site->handle();
-
-        //     if ($set->existsIn($site)) {
-        //         $this->saveType($set->in($handle));
-        //     }
-        // });
-
-        // return true;
     }
 }

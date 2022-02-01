@@ -1,14 +1,33 @@
 # Stacheless
 
-> Stacheless is a Statamic addon that does something pretty neat.
+> Stacheless is a Statamic addon to run CMS data through Eloquent.
 
 ## Features
 
-This addon does:
+This addon provides Repository replacement for the default Stache Repositories for the following Statamic types:
 
-- This
-- And this
-- And even this
+- [x] Entries
+- [x] Revisions
+- [x] Collections
+- [x] Collection Trees
+- [x] Navigations
+- [x] Navigation Trees
+- [X] Global Sets
+- [X] Global Variables
+- [ ] Taxonomies
+- [ ] Terms
+- [ ] Assets
+- [ ] Asset Containers
+- [ ] Forms
+- [ ] Submissions
+
+It supports the following Statamic concepts:
+
+- [x] Multi-site
+
+## Why?
+
+> When you want to run Statamic in a container, but also have the data in a database.
 
 ## How to Install
 
@@ -21,3 +40,4 @@ composer require few-far/stacheless
 ## How to Use
 
 Here's where you can explain how to use this wonderful addon.
+

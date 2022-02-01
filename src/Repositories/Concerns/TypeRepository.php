@@ -117,11 +117,16 @@ trait TypeRepository
 
         $this->hydrateModel($model, $type);
 
-        $model->save();
+        $this->saveModel($model);
 
         $this->getBlinkStore()->put($this->makeBlinkKeyForType($type), $type);
 
         return true;
+    }
+
+    protected function saveModel($model)
+    {
+        $model->save();
     }
 
     public function delete($type)
