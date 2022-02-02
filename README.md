@@ -14,7 +14,7 @@ This addon provides Repository replacement for the default Stache Repositories f
 - [x] Navigation Trees
 - [X] Global Sets
 - [X] Global Variables
-- [ ] Taxonomies
+- [X] Taxonomies
 - [ ] Terms
 - [ ] Assets
 - [ ] Asset Containers

@@ -58,6 +58,12 @@ return [
             'model' => \FewFar\Stacheless\Database\GlobalSetModel::class,
             'variables_model' => \FewFar\Stacheless\Database\GlobalVariablesModel::class,
         ],
+
+        'taxonomies' => [
+            'enabled' => env('STACHELESS_TAXONOMIES', true),
+            'repository' => \FewFar\Stacheless\Repositories\TaxonomyRepository::class,
+            'model' => \FewFar\Stacheless\Database\TaxonomyModel::class,
+        ],
     ],
 
 ];
