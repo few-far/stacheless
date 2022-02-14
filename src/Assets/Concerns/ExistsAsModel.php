@@ -5,9 +5,12 @@ namespace FewFar\Stacheless\Assets\Concerns;
 use FewFar\Stacheless\Config;
 use Illuminate\Support\Arr;
 use Statamic\Facades\YAML;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait ExistsAsModel
 {
+    protected $isBeingUploaded = false;
+
     public function exists()
     {
         if (! $this->path()) {
@@ -16,6 +19,10 @@ trait ExistsAsModel
 
         if (! $this->container()) {
             return false;
+        }
+
+        if ($this->isBeingUploaded) {
+            return true;
         }
 
         if (! $this->model) {
@@ -36,10 +43,28 @@ trait ExistsAsModel
 
     public function hydrateModel()
     {
-        return $this->model = app(Config::class)->get('types.assets.model')::query()
+        if ($this->model) {
+            return;
+        }
+
+        $this->model = app(Config::class)->get('types.assets.model')::query()
             ->where('container', $this->containerHandle())
             ->where('path', $this->path())
             ->first();
+    }
+    public function hydrate()
+    {
+        $this->hydrateModel();
+
+        if ($this->model) {
+            $this->setMeta(YAML::parse($this->model->yaml));
+        }
+
+        else if ($this->isBeingUploaded) {
+            $this->setMeta($this->generateMeta());
+        }
+
+        return $this;
     }
 
     public function meta($key = null)
@@ -48,14 +73,14 @@ trait ExistsAsModel
             return $this->metaValue($key);
         }
 
-        if ($this->meta) {
-            return array_merge($this->meta, ['data' => $this->data->all()]);
+        if (! $this->meta) {
+            return null;
         }
 
-        return $this->meta = YAML::parse($this->model->yaml);
+        return array_merge($this->meta, ['data' => $this->data->all()]);
     }
 
-    private function metaValue($key)
+    protected function metaValue($key)
     {
         return Arr::get($this->meta(), $key);
     }
@@ -69,13 +94,26 @@ trait ExistsAsModel
         return $this;
     }
 
-    public function metaPath()
+    public function writeMeta($meta)
     {
         throw new \Exception('not supported');
     }
 
-    public function writeMeta($meta)
+    /**
+     * Upload a file.
+     *
+     * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
+     * @return void
+     */
+    public function upload(UploadedFile $file)
     {
-        throw new \Exception('not supported');
+        // Statamic works by deferred writing of the meta file when the
+        // meta data is first request. We've changed the semantics where
+        // if the Asset is in the DB, then we consider it as existing.
+        // To get around this on first save, we set this flag which will
+        // allow meta() to generate the first time.
+        $this->isBeingUploaded = true;
+
+        return parent::upload($file);
     }
 }

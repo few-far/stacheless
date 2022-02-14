@@ -42,7 +42,6 @@ class AssetRepository extends BaseRepository implements RepositoryContract
     {
         return $type
             ->setModel($model)
-            ->setMeta(YAML::parse($model->yaml))
             ->path($model->path)
             ->container(AssetContainer::findByHandle($model->container))
             ->hydrate()
