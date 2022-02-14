@@ -19,6 +19,8 @@ class CreateStatamicGlobalVariablesTable extends Migration
             $table->text('site');
             $table->jsonb('json')->nullable();
             $table->text('yaml')->nullable();
+
+            $table->primary(['site', 'handle']);
         });
     }
 

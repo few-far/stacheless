@@ -20,7 +20,7 @@ class CreateStatamicNavigationTreesTable extends Migration
             $table->jsonb('json')->nullable();
             $table->text('yaml')->nullable();
 
-            $table->index(['site', 'handle']);
+            $table->primary(['site', 'handle']);
         });
     }
 

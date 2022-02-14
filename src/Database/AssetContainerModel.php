@@ -2,6 +2,6 @@
 
 namespace FewFar\Stacheless\Database;
 
-class TaxonomyModel extends Model
+class AssetContainerModel extends Model
 {
 }

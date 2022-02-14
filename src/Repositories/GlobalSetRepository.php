@@ -29,6 +29,11 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
+    public function make($handle = null)
+    {
+        return app($this->typeClass)->handle($handle);
+    }
+
     public function findNoCache($key)
     {
         if (! ($model = $this->findModel($key))) {

@@ -4,7 +4,7 @@
 
 ## Features
 
-This addon provides Repository replacement for the default Stache Repositories for the following Statamic types:
+This addon provides multi-site supported Repository replacements for the file-based Statamic Repositories:
 
 - [x] Entries
 - [x] Revisions
@@ -12,22 +12,21 @@ This addon provides Repository replacement for the default Stache Repositories f
 - [x] Collection Trees
 - [x] Navigations
 - [x] Navigation Trees
-- [X] Global Sets
-- [X] Global Variables
+- [X] Globals
 - [X] Taxonomies
-- [ ] Terms
-- [ ] Assets
-- [ ] Asset Containers
+- [X] Terms
+- [X] Assets
+- [X] Asset Containers
 - [ ] Forms
 - [ ] Submissions
+- [ ] Blueprints
+- [ ] Fieldsets
 
-It supports the following Statamic concepts:
-
-- [x] Multi-site
+For Users, Group and Permissions it’s recommended you use the built in Statamic solution: https://statamic.dev/tips/storing-users-in-a-database
 
 ## Why?
 
-> When you want to run Statamic in a container, but also have the data in a database.
+> A fast and scaleable method to store and access Statamic data via a database.
 
 ## How to Install
 
@@ -39,5 +38,24 @@ composer require few-far/stacheless
 
 ## How to Use
 
-Here's where you can explain how to use this wonderful addon.
+Optionally chose some types to keep using the Statamic Repositories:
 
+```
+# .env
+STACHELESS_GLOBALS=false
+```
+
+Then publish and run the migrations:
+
+```
+$ php artisan stacheless:migrations
+$ php artisan migrate
+```
+
+You’re good to go!
+
+For finer control you can publish the package’s config:
+
+```
+$ php artisan vendor:publish --tag stacheless-config
+```

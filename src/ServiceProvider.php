@@ -33,6 +33,7 @@ class ServiceProvider extends AddonServiceProvider
         Commands\MigrateNavigationTreesCommand::class,
         Commands\MigrateNavigationsCommand::class,
         Commands\MigrateRevisionsCommand::class,
+        Commands\MigrateAssetsCommand::class,
     ];
 
 
@@ -81,7 +82,8 @@ class ServiceProvider extends AddonServiceProvider
         $this->registerType('global_sets');
         $this->registerType('taxonomies');
         $this->registerType('terms');
-
+        $this->registerType('assets');
+        $this->registerType('asset_containers');
     }
 
     protected function registerType($type)
@@ -95,13 +97,15 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function register_entries()
     {
-        $this->app->bind(\FewFar\Stacheless\Database\EntryQueryBuilder::class, function () {
-            return new \FewFar\Stacheless\Database\EntryQueryBuilder($this->config->get('types.entries.model')::query());
-        });
+        $this->app->when(\FewFar\Stacheless\Database\EntryQueryBuilder::class)
+            ->needs(\Illuminate\Database\Eloquent\Builder::class)
+            ->give(function () {
+                return $this->config->get('types.entries.model')::query();
+            });
 
         Statamic::repository(
             \Statamic\Contracts\Entries\EntryRepository::class,
-            \FewFar\Stacheless\Repositories\EntryRepository::class
+            $this->config->get('types.entries.repository')
         );
     }
 
@@ -109,7 +113,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         $this->app->singleton(
             \Statamic\Contracts\Revisions\RevisionRepository::class,
-            \FewFar\Stacheless\Repositories\RevisionRepository::class
+            $this->config->get('types.revisions.repository')
         );
     }
 
@@ -117,7 +121,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         Statamic::repository(
             \Statamic\Contracts\Entries\CollectionRepository::class,
-            \FewFar\Stacheless\Repositories\CollectionRepository::class
+            $this->config->get('types.collections.repository')
         );
     }
 
@@ -125,7 +129,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         Statamic::repository(
             \Statamic\Contracts\Structures\CollectionTreeRepository::class,
-            \FewFar\Stacheless\Repositories\CollectionTreeRepository::class
+            $this->config->get('types.collection_trees.repository'),
         );
     }
 
@@ -133,7 +137,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         Statamic::repository(
             \Statamic\Contracts\Structures\NavigationRepository::class,
-            \FewFar\Stacheless\Repositories\NavigationRepository::class
+            $this->config->get('types.navigations.repository')
         );
     }
 
@@ -141,7 +145,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         Statamic::repository(
             \Statamic\Contracts\Structures\NavTreeRepository::class,
-            \FewFar\Stacheless\Repositories\NavigationTreeRepository::class
+            $this->config->get('types.navigation_trees.repository')
         );
     }
 
@@ -149,7 +153,45 @@ class ServiceProvider extends AddonServiceProvider
     {
         Statamic::repository(
             \Statamic\Contracts\Globals\GlobalRepository::class,
-            \FewFar\Stacheless\Repositories\GlobalSetRepository::class
+            $this->config->get('types.global_sets.repository')
+        );
+    }
+
+    protected function register_taxonomies()
+    {
+        Statamic::repository(
+            \Statamic\Contracts\Taxonomies\TaxonomyRepository::class,
+            $this->config->get('types.taxonomies.repository')
+        );
+    }
+
+    protected function register_terms()
+    {
+        Statamic::repository(
+            \Statamic\Contracts\Taxonomies\TermRepository::class,
+            $this->config->get('types.terms.repository')
+        );
+    }
+
+    protected function register_asset_containers()
+    {
+        Statamic::repository(
+            \Statamic\Contracts\Assets\AssetContainerRepository::class,
+            $this->config->get('types.asset_containers.repository')
+        );
+    }
+
+    protected function register_assets()
+    {
+        $this->app->when(\FewFar\Stacheless\Database\AssetQueryBuilder::class)
+            ->needs(\Illuminate\Database\Eloquent\Builder::class)
+            ->give(function () {
+                return $this->config->get('types.assets.model')::query();
+            });
+
+        Statamic::repository(
+            \Statamic\Contracts\Assets\AssetRepository::class,
+            $this->config->get('types.assets.repository')
         );
     }
 }

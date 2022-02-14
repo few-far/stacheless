@@ -14,13 +14,12 @@ class CreateStatamicEntriesTable extends Migration
     public function up()
     {
         Schema::create('statamic_entries', function (Blueprint $table) {
-            $table->uuid('id')->index();
+            $table->uuid('id')->primary();
             $table->timestamps();
             $table->string('site');
             $table->uuid('origin_id')->nullable();
-            $table->boolean('published')->default(true);
+            $table->boolean('published')->default(false);
             $table->string('blueprint')->nullable();
-            $table->string('status');
             $table->string('slug');
             $table->string('uri')->nullable()->index();
             $table->string('date')->nullable();

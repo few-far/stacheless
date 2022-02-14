@@ -2,11 +2,8 @@
 
 namespace FewFar\Stacheless\Repositories\Concerns;
 
-use FewFar\Stacheless\Config;
-use Statamic\Contracts\Structures\Tree;
 use Statamic\Facades\Blink;
-use Statamic\Facades\YAML;
-use Statamic\Structures\NavTree;
+use Illuminate\Support\Collection as IlluminateCollection;
 
 trait TypeRepository
 {
@@ -51,9 +48,9 @@ trait TypeRepository
         return [ 'handle' => $type->handle() ];
     }
 
-    public function make(string $handle = null)
+    public function makeType($model)
     {
-        return app($this->typeClass)->handle($handle);
+        return app($this->typeClass)->handle($model->handle);
     }
 
     protected function getBlinkStore()
@@ -64,6 +61,22 @@ trait TypeRepository
     protected function getModelClass()
     {
         return $this->config->get("types.$this->typeKey.model");
+    }
+
+    public function all(): IlluminateCollection
+    {
+        return $this->getBlinkStore()->once($this->typeClass, function () {
+            return $this->getModelClass()::all()->map(function ($model) {
+                return $this->toType($model);
+            });
+        });
+    }
+
+    public function findInAll($handle)
+    {
+        return $this->all()->first(function ($item) use ($handle) {
+            return $item->handle() === $handle;
+        });
     }
 
     public function findWithCache($key)
@@ -94,7 +107,7 @@ trait TypeRepository
 
     public function toType($model)
     {
-        $type = $this->make($model->handle);
+        $type = $this->makeType($model);
 
         $this->hydrateType($type, $model);
 

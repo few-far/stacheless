@@ -14,7 +14,7 @@ class CreateStatamicCollectionsTable extends Migration
     public function up()
     {
         Schema::create('statamic_collections', function (Blueprint $table) {
-            $table->string('handle')->index();
+            $table->string('handle')->primary();
             $table->timestamps();
             $table->jsonb('json')->nullable();
             $table->text('yaml')->nullable();

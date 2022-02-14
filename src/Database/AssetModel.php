@@ -2,7 +2,7 @@
 
 namespace FewFar\Stacheless\Database;
 
-class EntryModel extends Model
+class AssetModel extends Model
 {
     /**
      * The primary key for the model.

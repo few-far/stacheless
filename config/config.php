@@ -40,6 +40,12 @@ return [
             'model' => \FewFar\Stacheless\Database\EntryModel::class,
         ],
 
+        'revisions' => [
+            'enabled' => env('STACHELESS_REVISIONS', true),
+            'repository' => \FewFar\Stacheless\Repositories\RevisionRepository::class,
+            'model' => \FewFar\Stacheless\Database\RevisionModel::class,
+        ],
+
         'collections' => [
             'enabled' => env('STACHELESS_COLLECTIONS', true),
             'repository' => \FewFar\Stacheless\Repositories\CollectionRepository::class,
@@ -63,6 +69,26 @@ return [
             'enabled' => env('STACHELESS_TAXONOMIES', true),
             'repository' => \FewFar\Stacheless\Repositories\TaxonomyRepository::class,
             'model' => \FewFar\Stacheless\Database\TaxonomyModel::class,
+        ],
+
+        'terms' => [
+            'enabled' => env('STACHELESS_TERMS', true),
+            'repository' => \FewFar\Stacheless\Repositories\TermRepository::class,
+            'model' => \FewFar\Stacheless\Database\TermModel::class,
+        ],
+
+        'asset_containers' => [
+            'enabled' => env('STACHELESS_ASSET_CONTAINERS', true),
+            'repository' => \FewFar\Stacheless\Repositories\AssetContainerRepository::class,
+            'model' => \FewFar\Stacheless\Database\AssetContainerModel::class,
+        ],
+
+        'assets' => [
+            'enabled' => env('STACHELESS_ASSETS', true),
+            'repository' => \FewFar\Stacheless\Repositories\AssetRepository::class,
+            'model' => \FewFar\Stacheless\Database\AssetModel::class,
+            'query' => \FewFar\Stacheless\Database\AssetQueryBuilder::class,
+            'asset' => \FewFar\Stacheless\Assets\Asset::class,
         ],
     ],
 

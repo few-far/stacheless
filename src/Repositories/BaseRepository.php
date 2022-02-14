@@ -9,7 +9,7 @@ abstract class BaseRepository
     use Concerns\TypeRepository;
 
     /**
-     * Determines if Statamic type has a site/locale.
+     * Creates in instance of the class.
      *
      * @var bool
      */

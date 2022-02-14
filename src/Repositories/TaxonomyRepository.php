@@ -40,13 +40,9 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
             ->sites($sites);
     }
 
-    public function all(): IlluminateCollection
+    public function make(string $handle = null): TypeContract
     {
-        return $this->getBlinkStore()->once($this->typeKey, function () {
-            return $this->getModelClass()::all()->map(function ($model) {
-                return $this->toType($model);
-            });
-        });
+        return parent::make($handle);
     }
 
     public function find($id): ?TypeContract

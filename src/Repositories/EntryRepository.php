@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use FewFar\Stacheless\Database\EntryModel;
 use Statamic\Contracts\Entries\EntryRepository as Contract;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Entries\Entry as EntryContract;
 use Statamic\Contracts\Entries\QueryBuilder;
 use Statamic\Facades\Site;
@@ -58,9 +59,14 @@ class EntryRepository extends BaseRepository implements Contract
             'blueprint' => $type->blueprint()->handle(),
             'date' => $type->hasDate() ? $type->date() : null,
             'collection' => $type->collectionHandle(),
-            'published' => $type->published(),
-            'status' => $type->status(),
+            'published' => is_string($published = $type->published())
+                ? $published === 'published'
+                : $published === true,
         ]);
+    }
+
+    public function taxonomize($entry)
+    {
     }
 
     protected function makeWhereArgs($type)
@@ -73,15 +79,15 @@ class EntryRepository extends BaseRepository implements Contract
         return app($this->typeClass);
     }
 
-    public function all()
+    public function all(): IlluminateCollection
     {
         return $this->query()->all();
     }
 
     public function whereCollection(string $handle)
     {
-        return $this->getBlinkStore()->once("collection::$handle", function () use ($handle) {
-            return $this->query()->where('collection', $handle)->get();
+        return $this->getBlinkStore()->once("entries::$handle", function () use ($handle) {
+            return $this->query()->where('entries', $handle)->get();
         });
     }
 
@@ -90,7 +96,7 @@ class EntryRepository extends BaseRepository implements Contract
         $store = $this->getBlinkStore();
 
         $missing = collect($handles)
-            ->filter(fn ($handle) => $store->has("collection::$handle"));
+            ->filter(fn ($handle) => $store->has("entries::$handle"));
 
         if ($missing->isNotEmpty()) {
             $entriesByCollection = $this->query()
@@ -100,12 +106,12 @@ class EntryRepository extends BaseRepository implements Contract
                 ->collectionHandle();
 
             foreach ($entriesByCollection as $handle => $entries) {
-                $store->put("collection::$handle", $entries);
+                $store->put("entries::$handle", $entries);
             }
         }
 
         return collect($handles)
-            ->flatMap(fn ($handle) => $store->get("collection::$handle"))
+            ->flatMap(fn ($handle) => $store->get("entries::$handle"))
             ->filter()
             ->values();
     }
@@ -143,8 +149,6 @@ class EntryRepository extends BaseRepository implements Contract
         throw new \Exception('Not implemented');
     }
 
-    // public function make();
-
     public function query()
     {
         return app(QueryBuilder::class);
@@ -158,8 +162,6 @@ class EntryRepository extends BaseRepository implements Contract
 
         return parent::save($entry);
     }
-
-    // public function delete($entry);
 
     public function createRules($collection, $site)
     {

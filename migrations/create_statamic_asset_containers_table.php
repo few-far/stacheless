@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStatamicGlobalSetsTable extends Migration
+class CreateStatamicAssetContainersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStatamicGlobalSetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statamic_global_sets', function (Blueprint $table) {
+        Schema::create('statamic_asset_containers', function (Blueprint $table) {
             $table->string('handle')->primary();
             $table->timestamps();
             $table->jsonb('json')->nullable();
@@ -28,6 +28,6 @@ class CreateStatamicGlobalSetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statamic_global_sets');
+        Schema::dropIfExists('statamic_asset_containers');
     }
 }

@@ -58,28 +58,22 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
 
     public function make(string $handle = null): TypeContract
     {
-        return parent::make($handle);
+        return app($this->typeClass)->handle($handle);
     }
 
     public function all(): IlluminateCollection
     {
-        return $this->getBlinkStore()->once('collections', function () {
-            return $this->getModelClass()::all()->map(function ($model) {
-                return $this->toType($model);
-            });
-        });
+        return parent::all();
     }
 
     public function find($id): ?TypeContract
     {
-        return $this->findByHandle($id);
+        return parent::findInAll($id);
     }
 
     public function findByHandle($handle): ?TypeContract
     {
-        return $this->all()->first(function ($item) use ($handle) {
-            return $item->handle() === $handle;
-        });
+        return parent::findInAll($handle);
     }
 
     public function findByMount($mount): ?TypeContract

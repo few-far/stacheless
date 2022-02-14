@@ -10,12 +10,8 @@ use Statamic\Facades\YAML;
 use Statamic\Revisions\Revision;
 use Statamic\Revisions\WorkingCopy;
 
-class RevisionRepository implements RepositoryContract
+class RevisionRepository extends BaseRepository implements RepositoryContract
 {
-    use Concerns\TypeRepository {
-        save as saveType;
-    }
-
     /**
      * Statamic type "slug" used for config and Blink cache.
      *
@@ -30,14 +26,10 @@ class RevisionRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
-    /**
-     * Determines if Statamic type has a site/locale.
-     *
-     * @var bool
-     */
-    public function __construct(Config $config)
+
+    public function make(): TypeContract
     {
-        $this->config = $config;
+        return app($this->typeClass);
     }
 
     protected function makeBlinkKey($key)
@@ -69,7 +61,7 @@ class RevisionRepository implements RepositoryContract
 
     public function findWorkingCopyByKey($key)
     {
-        $model = $this->getModelClass::query()
+        $model = $this->getModelClass()::query()
             ->where('key', $key)
             ->where('filename', 'working')
             ->first();
@@ -81,11 +73,11 @@ class RevisionRepository implements RepositoryContract
         return $this->toType($model);
     }
 
-    public function save(TypeContract $revision)
+    public function save($revision)
     {
         $revision->id($revision->date()->timestamp);
 
-        return $this->saveType($revision);
+        return parent::save($revision);
     }
 
     protected function hydrateType($type, $model)
