@@ -5,7 +5,7 @@ namespace FewFar\Stacheless\Repositories;
 use FewFar\Stacheless\Config;
 use Statamic\Contracts\Assets\Asset;
 use Statamic\Contracts\Assets\AssetRepository as RepositoryContract;
-use Statamic\Contracts\Entries\QueryBuilder;
+use Statamic\Contracts\Assets\QueryBuilder;
 use Statamic\Facades\AssetContainer;
 use Statamic\Facades\URL;
 use Illuminate\Support\Str;

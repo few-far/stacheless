@@ -80,9 +80,9 @@ class TermRepository extends BaseRepository implements RepositoryContract
         return app($this->typeClass)->slug($slug);
     }
 
-    public function makeWithHandle(string $slug = null)
+    public function makeType($model)
     {
-        return $this->make($slug);
+        return $this->make($model->slug);
     }
 
     public function whereTaxonomy(string $handle)

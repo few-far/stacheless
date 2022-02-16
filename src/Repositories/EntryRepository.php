@@ -79,6 +79,11 @@ class EntryRepository extends BaseRepository implements Contract
         return app($this->typeClass);
     }
 
+    public function makeType($model)
+    {
+        return $this->make();
+    }
+
     public function all(): IlluminateCollection
     {
         return $this->query()->all();
