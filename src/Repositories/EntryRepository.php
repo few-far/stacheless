@@ -86,14 +86,12 @@ class EntryRepository extends BaseRepository implements Contract
 
     public function all(): IlluminateCollection
     {
-        return $this->query()->all();
+        return $this->query()->get();
     }
 
     public function whereCollection(string $handle)
     {
-        return $this->getBlinkStore()->once("entries::$handle", function () use ($handle) {
-            return $this->query()->where('entries', $handle)->get();
-        });
+        return $this->whereInCollection([ $handle ]);
     }
 
     public function whereInCollection(array $handles)
@@ -107,18 +105,20 @@ class EntryRepository extends BaseRepository implements Contract
             $entriesByCollection = $this->query()
                 ->whereIn('collection', $handles)
                 ->get()
-                ->groupBy
-                ->collectionHandle();
+                ->groupBy->collectionHandle();
 
             foreach ($entriesByCollection as $handle => $entries) {
                 $store->put("entries::$handle", $entries);
             }
         }
 
+        // No, get all the entries in the order they've been asked
+        // for in the $handles argument.
         return collect($handles)
             ->flatMap(fn ($handle) => $store->get("entries::$handle"))
             ->filter()
-            ->values();
+            ->values()
+            ->each(fn ($entry) => $store->put($this->makeBlinkKey($entry->id()), $entry));
     }
 
     public function find($id)
@@ -144,6 +144,8 @@ class EntryRepository extends BaseRepository implements Contract
         if (! $entry) {
             return null;
         }
+
+        $this->getBlinkStore()->put($this->makeBlinkKey($entry->id()), $entry);
 
         return $entry;
     }

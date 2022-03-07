@@ -172,6 +172,8 @@ class AssetRepository extends BaseRepository implements RepositoryContract
 
     public function saveModel($model)
     {
+        logger('saving', $model->only('id'));
+
         if (!$model->exists) {
             $model->id = (string) Str::uuid();
         }

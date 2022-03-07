@@ -2,6 +2,7 @@
 
 namespace FewFar\Stacheless\Database;
 
+use Illuminate\Database\PostgresConnection;
 use Illuminate\Support\Arr;
 use Statamic\Contracts\Entries\EntryRepository;
 use Statamic\Contracts\Entries\QueryBuilder;
@@ -12,7 +13,7 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
 {
     protected $real_columns = [
         'id', 'site', 'origin_id', 'published', 'status', 'slug', 'uri',
-        'date', 'collection', 'created_at', 'updated_at',
+        'json', 'yaml', 'date', 'collection', 'created_at', 'updated_at',
     ];
 
     protected function transform($items, $columns = [])
@@ -30,6 +31,21 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         }
 
         return $column;
+    }
+
+    public function where($column, $operator = null, $value = null)
+    {
+        $switch_like_operator = (
+            func_num_args() === 3
+             && strtolower($operator) === 'like'
+             && $this->builder->getConnection() instanceof PostgresConnection
+        );
+
+        if ($switch_like_operator) {
+            return parent::where($column, 'ILIKE', $value);
+        }
+
+        return parent::where(...func_get_args());
     }
 
     public function first()

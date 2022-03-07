@@ -58,6 +58,18 @@ return [
             'model' => \FewFar\Stacheless\Database\CollectionTreeModel::class,
         ],
 
+        'navigations' => [
+            'enabled' => env('STACHELESS_NAVIGATIONS', true),
+            'repository' => \FewFar\Stacheless\Repositories\NavigationRepository::class,
+            'model' => \FewFar\Stacheless\Database\NavigationModel::class,
+        ],
+
+        'navigation_trees' => [
+            'enabled' => env('STACHELESS_NAVIGATION_TREES', true),
+            'repository' => \FewFar\Stacheless\Repositories\NavigationTreeRepository::class,
+            'model' => \FewFar\Stacheless\Database\NavigationTreeModel::class,
+        ],
+
         'global_sets' => [
             'enabled' => env('STACHELESS_GLOBAL_SETS', true),
             'repository' => \FewFar\Stacheless\Repositories\GlobalSetRepository::class,

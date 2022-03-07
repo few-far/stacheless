@@ -52,6 +52,11 @@ class NavigationRepository extends BaseRepository implements RepositoryContract
         return $this->findByHandle($id);
     }
 
+    public function make(string $handle = null): NavigationContract
+    {
+        return app($this->typeClass)->handle($handle);
+    }
+
     public function findByHandle($handle): ?NavigationContract
     {
         return $this->all()->first(function ($item) use ($handle) {

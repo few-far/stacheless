@@ -26,15 +26,26 @@ class RevisionRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
-
     public function make(): TypeContract
     {
-        return app($this->typeClass);
+        return app(\Statamic\Revisions\Revision::class);
+    }
+
+    public function makeType($model)
+    {
+        return $this->make();
     }
 
     protected function makeBlinkKey($key)
     {
         return "$this->typeKey::{$key['filename']}::{$key['key']}";
+    }
+
+    protected function makeBlinkKeyForType($type)
+    {
+        return $this->makeBlinkKey(
+            $this->makeWhereArgs($type)
+        );
     }
 
     protected function makeWhereArgs($type)

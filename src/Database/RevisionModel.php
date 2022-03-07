@@ -14,4 +14,13 @@ class RevisionModel extends Eloquent
      * @var string[]|bool
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'json' => 'json',
+    ];
 }

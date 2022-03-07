@@ -65,7 +65,7 @@ trait TypeRepository
 
     public function all(): IlluminateCollection
     {
-        return $this->getBlinkStore()->once($this->typeClass, function () {
+        return $this->getBlinkStore()->once($this->typeKey, function () {
             return $this->getModelClass()::all()->map(function ($model) {
                 return $this->toType($model);
             });

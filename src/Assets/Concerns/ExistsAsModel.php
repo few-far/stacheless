@@ -57,14 +57,32 @@ trait ExistsAsModel
         $this->hydrateModel();
 
         if ($this->model) {
-            $this->setMeta(YAML::parse($this->model->yaml));
-        }
-
-        else if ($this->isBeingUploaded) {
-            $this->setMeta($this->generateMeta());
+            $this->setMeta([
+                'last_updated' => $this->model->updated_at->timestamp,
+            ] + (YAML::parse($this->model->yaml) ?? []));
         }
 
         return $this;
+    }
+
+    public function get($key, $fallback = null)
+    {
+        return $this->traitGet($key, $fallback);
+    }
+
+    public function set($key, $value)
+    {
+        return $this->traitSet($key, $value);
+    }
+
+    public function remove($key)
+    {
+        return $this->traitRemove($key);
+    }
+
+    public function data($data = null)
+    {
+        return call_user_func_array([$this, 'traitData'], func_get_args());
     }
 
     public function meta($key = null)
@@ -87,9 +105,9 @@ trait ExistsAsModel
 
     public function setMeta($meta)
     {
-        $this->meta = $meta;
+        $this->meta = $meta ?? [];
 
-        $this->data = collect($meta['data']);
+        $this->data = collect(Arr::get($meta, 'data'));
 
         return $this;
     }
@@ -115,5 +133,14 @@ trait ExistsAsModel
         $this->isBeingUploaded = true;
 
         return parent::upload($file);
+    }
+
+    public function save()
+    {
+        if ($this->isBeingUploaded) {
+            $this->setMeta($this->generateMeta());
+        }
+
+        return parent::save();
     }
 }
