@@ -138,9 +138,12 @@ class TermRepository extends BaseRepository implements RepositoryContract
     }
 
     /** @deprecated */
-    public function findBySlug(string $slug, string $collection)
+    public function findBySlug(string $slug, string $taxonomy)
     {
-        throw new \Exception('Not implemented');
+        return $this->query()
+            ->where('taxonomy', $taxonomy)
+            ->where('slug', $slug)
+            ->first();
     }
 
     public function entriesCount(Term $term): int

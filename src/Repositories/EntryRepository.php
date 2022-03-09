@@ -153,7 +153,10 @@ class EntryRepository extends BaseRepository implements Contract
     /** @deprecated */
     public function findBySlug(string $slug, string $collection)
     {
-        throw new \Exception('Not implemented');
+        return $this->query()
+            ->where('collection', $collection)
+            ->where('slug', $slug)
+            ->first();
     }
 
     public function query()
