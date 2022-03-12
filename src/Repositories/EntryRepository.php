@@ -74,6 +74,11 @@ class EntryRepository extends BaseRepository implements Contract
         return [ 'id' => $type->id() ];
     }
 
+    protected function makeWhereArgsFromKey($key)
+    {
+        return [ 'id' => $key ];
+    }
+
     public function make(string $handle = null)
     {
         return app($this->typeClass);
@@ -118,7 +123,7 @@ class EntryRepository extends BaseRepository implements Contract
             ->flatMap(fn ($handle) => $store->get("entries::$handle"))
             ->filter()
             ->values()
-            ->each(fn ($entry) => $store->put($this->makeBlinkKey($entry->id()), $entry));
+            ->each(fn ($entry) => $this->storeInCache($entry, $store));
     }
 
     public function find($id)
@@ -127,9 +132,7 @@ class EntryRepository extends BaseRepository implements Contract
             return null;
         }
 
-        return $this->getBlinkStore()->once($this->makeBlinkKey($id), function () use ($id) {
-            return $this->query()->where('id', $id)->first();
-        });
+        return $this->findWithCache($id);
     }
 
     public function findByUri(string $uri, string $site = null): ?EntryContract
@@ -145,7 +148,7 @@ class EntryRepository extends BaseRepository implements Contract
             return null;
         }
 
-        $this->getBlinkStore()->put($this->makeBlinkKey($entry->id()), $entry);
+        $this->storeInCache($entry);
 
         return $entry;
     }
@@ -153,10 +156,7 @@ class EntryRepository extends BaseRepository implements Contract
     /** @deprecated */
     public function findBySlug(string $slug, string $collection)
     {
-        return $this->query()
-            ->where('collection', $collection)
-            ->where('slug', $slug)
-            ->first();
+        throw new \Exception('Not implemented');
     }
 
     public function query()

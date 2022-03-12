@@ -38,15 +38,6 @@ class NavigationRepository extends BaseRepository implements RepositoryContract
             ->expectsRoot($data['root'] ?? false);
     }
 
-    public function all(): IlluminateCollection
-    {
-        return $this->getBlinkStore()->once('navigations', function () {
-            return $this->getModelClass()::all()->map(function ($model) {
-                return $this->toType($model);
-            });
-        });
-    }
-
     public function find($id): ?NavigationContract
     {
         return $this->findByHandle($id);
@@ -59,8 +50,6 @@ class NavigationRepository extends BaseRepository implements RepositoryContract
 
     public function findByHandle($handle): ?NavigationContract
     {
-        return $this->all()->first(function ($item) use ($handle) {
-            return $item->handle() === $handle;
-        });
+        return $this->findInAll($handle);
     }
 }

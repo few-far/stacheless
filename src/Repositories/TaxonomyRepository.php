@@ -42,7 +42,7 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
 
     public function make(string $handle = null): TypeContract
     {
-        return parent::make($handle);
+        return app($this->typeClass)->handle($handle);
     }
 
     public function find($id): ?TypeContract
@@ -52,9 +52,7 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
 
     public function findByHandle($handle): ?TypeContract
     {
-        return $this->all()->first(function ($item) use ($handle) {
-            return $item->handle() === $handle;
-        });
+        return $this->findInAll($handle);
     }
 
     public function findByUri(string $uri): ?TypeContract

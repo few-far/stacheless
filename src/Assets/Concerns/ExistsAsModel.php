@@ -4,6 +4,7 @@ namespace FewFar\Stacheless\Assets\Concerns;
 
 use FewFar\Stacheless\Config;
 use Illuminate\Support\Arr;
+use Statamic\Facades\Asset;
 use Statamic\Facades\YAML;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -47,10 +48,7 @@ trait ExistsAsModel
             return;
         }
 
-        $this->model = app(Config::class)->get('types.assets.model')::query()
-            ->where('container', $this->containerHandle())
-            ->where('path', $this->path())
-            ->first();
+        $this->model = Asset::find($this->containerHandle() . '::' . $this->path())->model;
     }
     public function hydrate()
     {

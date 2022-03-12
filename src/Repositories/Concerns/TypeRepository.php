@@ -2,6 +2,8 @@
 
 namespace FewFar\Stacheless\Repositories\Concerns;
 
+use FewFar\Stacheless\Repositories\Events\TypeCached;
+use FewFar\Stacheless\Repositories\Events\TypeRequested;
 use Statamic\Facades\Blink;
 use Illuminate\Support\Collection as IlluminateCollection;
 
@@ -65,10 +67,11 @@ trait TypeRepository
 
     public function all(): IlluminateCollection
     {
-        return $this->getBlinkStore()->once($this->typeKey, function () {
-            return $this->getModelClass()::all()->map(function ($model) {
-                return $this->toType($model);
-            });
+        $store = $this->getBlinkStore();
+        return $store->once($this->typeKey, function () use ($store) {
+            return $this->getModelClass()::all()
+                ->map(fn ($model) => $this->toType($model))
+                ->each(fn ($type) => $this->storeInCache($type, $store));
         });
     }
 
@@ -81,9 +84,25 @@ trait TypeRepository
 
     public function findWithCache($key)
     {
-        return $this->getBlinkStore()->once($this->makeBlinkKey($key), function () use ($key) {
-            return $this->findNoCache($key);
+        if (!$key) {
+            return null;
+        }
+
+        $type = ($store = $this->getBlinkStore())->once($this->makeBlinkKey($key), function () use ($key, $store) {
+            $type = $this->findNoCache($key);
+
+            if ($type) {
+                $this->storeInCache($type, $store);
+            }
+
+            return $type;
         });
+
+        if ($type) {
+            TypeRequested::dispatch($type);
+        }
+
+        return $type;
     }
 
     protected function findModel($key)
@@ -123,6 +142,12 @@ trait TypeRepository
         return $this->toType($model);
     }
 
+    public function storeInCache($type, $store = null)
+    {
+        $key = $this->makeBlinkKeyForType($type);
+        ($store ?? $this->getBlinkStore())->put($key, $type);
+    }
+
     public function save($type)
     {
         $model = $this->getModelClass()::query()
@@ -132,7 +157,7 @@ trait TypeRepository
 
         $this->saveModel($model);
 
-        $this->getBlinkStore()->put($this->makeBlinkKeyForType($type), $type);
+        $this->storeInCache($type);
 
         return true;
     }

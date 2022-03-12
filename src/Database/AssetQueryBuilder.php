@@ -12,7 +12,7 @@ use Statamic\Query\EloquentQueryBuilder;
 class AssetQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
 {
     protected $real_columns = [
-        'container', 'path', 'folder', 'json', 'yaml', 'created_at', 'updated_at',
+        'id', 'container', 'path', 'folder', 'json', 'yaml', 'created_at', 'updated_at',
     ];
 
     protected function transform($items, $columns = [])
