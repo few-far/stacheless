@@ -42,6 +42,11 @@ trait ExistsAsModel
         return $this;
     }
 
+    public function getModel($model)
+    {
+        return $this->model;
+    }
+
     public function hydrateModel()
     {
         if ($this->model) {
