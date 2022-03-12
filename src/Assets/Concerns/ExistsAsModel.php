@@ -42,7 +42,7 @@ trait ExistsAsModel
         return $this;
     }
 
-    public function getModel($model)
+    public function getModel()
     {
         return $this->model;
     }
