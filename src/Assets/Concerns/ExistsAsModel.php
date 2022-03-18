@@ -53,8 +53,11 @@ trait ExistsAsModel
             return;
         }
 
-        $this->model = Asset::find($this->containerHandle() . '::' . $this->path())->model;
+        $asset = Asset::find($this->containerHandle() . '::' . $this->path());
+
+        $this->model = ($asset->model ?? null);
     }
+
     public function hydrate()
     {
         $this->hydrateModel();
@@ -117,7 +120,9 @@ trait ExistsAsModel
 
     public function writeMeta($meta)
     {
-        throw new \Exception('not supported');
+        $this->setMeta($meta);
+
+        parent::save();
     }
 
     /**
