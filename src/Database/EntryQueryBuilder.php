@@ -12,7 +12,7 @@ use Statamic\Query\EloquentQueryBuilder;
 class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
 {
     protected $real_columns = [
-        'id', 'site', 'origin_id', 'published', 'status', 'slug', 'uri',
+        'id', 'site', 'origin_id', 'published', 'slug', 'uri',
         'json', 'yaml', 'date', 'collection', 'created_at', 'updated_at',
     ];
 
@@ -42,7 +42,17 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         );
 
         if ($switch_like_operator) {
-            return parent::where($column, 'ILIKE', $value);
+            return $this->where($column, 'ILIKE', $value);
+        }
+
+        if ($column === 'status') {
+            if (func_num_args() === 2) {
+                return parent::where('published', $operator === 'published');
+            }
+
+            else {
+                return parent::where('published', $operator, $value === 'published');
+            }
         }
 
         return parent::where(...func_get_args());
