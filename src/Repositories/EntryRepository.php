@@ -4,6 +4,8 @@ namespace FewFar\Stacheless\Repositories;
 
 use Carbon\Carbon;
 use FewFar\Stacheless\Database\EntryModel;
+use FewFar\Stacheless\Repositories\Events\TypeRequested;
+use Illuminate\Support\Arr;
 use Statamic\Contracts\Entries\EntryRepository as Contract;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection as IlluminateCollection;
@@ -14,6 +16,9 @@ use Statamic\Facades\YAML;
 
 class EntryRepository extends BaseRepository implements Contract
 {
+    protected $substitutionsById = [];
+    protected $substitutionsByUri = [];
+
     public static function bindings()
     {
         return [
@@ -132,12 +137,21 @@ class EntryRepository extends BaseRepository implements Contract
             return null;
         }
 
+        if ($substitute = Arr::get($this->substitutionsById, $id)) {
+            TypeRequested::dispatch($substitute);
+            return $substitute;
+        }
+
         return $this->findWithCache($id);
     }
 
     public function findByUri(string $uri, string $site = null): ?EntryContract
     {
         $site = $site ?? Site::default()->handle();
+
+        if ($substitute = Arr::get($this->substitutionsByUri, $site.'@'.$uri)) {
+            return $substitute;
+        }
 
         $entry = $this->query()
             ->where('uri', $uri)
@@ -187,5 +201,18 @@ class EntryRepository extends BaseRepository implements Contract
             'title' => $collection->autoGeneratesTitles() ? '' : 'required',
             'slug' => 'alpha_dash',
         ];
+    }
+
+    public function substitute($item)
+    {
+        $this->substitutionsById[$item->id()] = $item;
+        $this->substitutionsByUri[$item->locale().'@'.$item->uri()] = $item;
+    }
+
+    public function applySubstitutions($items)
+    {
+        return $items->map(function ($item) {
+            return $this->substitutionsById[$item->id()] ?? $item;
+        });
     }
 }
