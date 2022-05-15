@@ -13,6 +13,8 @@ use Statamic\Facades\YAML;
 
 class CollectionRepository extends BaseRepository implements RepositoryContract
 {
+    protected $additionalPreviewTargets = [];
+
     /**
      * Statamic type "slug" used for config and Blink cache?
      *
@@ -110,5 +112,21 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
     public function whereStructured(): IlluminateCollection
     {
         return $this->all()->filter->hasStructure()->values();
+    }
+
+    public function addPreviewTargets($handle, $targets)
+    {
+        $targets = collect($this->additionalPreviewTargets[$handle] ?? [])
+            ->merge($targets)
+            ->unique(function ($target) {
+                return $target['format'];
+            })->all();
+
+        $this->additionalPreviewTargets = array_merge($this->additionalPreviewTargets, [$handle => $targets]);
+    }
+
+    public function additionalPreviewTargets($handle)
+    {
+        return collect($this->additionalPreviewTargets[$handle] ?? []);
     }
 }
