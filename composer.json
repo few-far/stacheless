@@ -17,9 +17,14 @@
         }
     },
     "require-dev": {
-        "statamic/cms": "^3.2.32"
+        "statamic/cms": "^3.3.34"
     },
     "require": {
         "engageinteractive/laravel-config-provider": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
     }
 }
