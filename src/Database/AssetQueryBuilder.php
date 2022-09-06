@@ -32,13 +32,13 @@ class AssetQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         return $column;
     }
 
-    public function where($column, $operator = null, $value = null)
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
         if ($column === 'container' && $operator instanceof AssetContainer) {
             $operator = $operator->handle();
         }
 
-        return parent::where($column, $operator, $value);
+        return parent::where($column, $operator, $value, $boolean);
     }
 
     public function first()

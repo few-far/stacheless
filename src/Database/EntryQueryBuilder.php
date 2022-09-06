@@ -33,7 +33,7 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         return $column;
     }
 
-    public function where($column, $operator = null, $value = null)
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
         $switch_like_operator = (
             func_num_args() === 3
@@ -42,7 +42,7 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         );
 
         if ($switch_like_operator) {
-            return $this->where($column, 'ILIKE', $value);
+            return $this->where($column, 'ILIKE', $value, $boolean);
         }
 
         if ($column === 'status') {
@@ -51,7 +51,7 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
             }
 
             else {
-                return parent::where('published', $operator, $value === 'published');
+                return parent::where('published', $operator, $value === 'published', $boolean);
             }
         }
 
