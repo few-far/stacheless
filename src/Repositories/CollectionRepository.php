@@ -6,13 +6,15 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Entries\Collection as TypeContract;
 use Statamic\Contracts\Entries\CollectionRepository as RepositoryContract;
-use Statamic\Entries\Collection;
+use Statamic\Data\StoresScopedComputedFieldCallbacks;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
 class CollectionRepository extends BaseRepository implements RepositoryContract
 {
+    use StoresScopedComputedFieldCallbacks;
+
     protected $additionalPreviewTargets = [];
 
     /**

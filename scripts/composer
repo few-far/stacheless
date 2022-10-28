@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Purpose:
+#
+# Runs frontend watch task in the build container.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+docker run --rm -v $PWD:/app composer:2.4.4 composer $@

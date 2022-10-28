@@ -17,7 +17,7 @@
         }
     },
     "require-dev": {
-        "statamic/cms": "^3.3.34"
+        "statamic/cms": "3.3.49"
     },
     "require": {
         "engageinteractive/laravel-config-provider": "^1.0"

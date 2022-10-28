@@ -2,6 +2,13 @@
 
 > Stacheless is a Statamic addon to run CMS data through Eloquent.
 
+## Compatibility with Statamic
+
+| Stacheless    | Statamic       |
+| ------------- | -------------- |
+| 0.1.10        | 3.3.48..3.3.49 |
+| 0.1.9         | 3.3.38..3.3.47 |
+
 ## Features
 
 This addon provides multi-site supported Repository replacements for the file-based Statamic Repositories:
@@ -29,8 +36,6 @@ For Users, Group and Permissions it’s recommended you use the built in Statami
 > A fast and scaleable method to store and access Statamic data via a database.
 
 ## How to Install
-
-You can search for this addon in the `Tools > Addons` section of the Statamic control panel and click **install**, or run the following command from your project root:
 
 ``` bash
 composer require few-far/stacheless
