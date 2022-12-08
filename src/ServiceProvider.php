@@ -3,6 +3,7 @@
 namespace FewFar\Stacheless;
 
 use FewFar\Stacheless\Commands;
+use FewFar\Stacheless\RequestUsage\RequestUsageServiceProvider;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 
@@ -24,6 +25,8 @@ class ServiceProvider extends AddonServiceProvider
 
     /**
      * Commands that Statamic Addon will register
+     *
+     * @var array<class-string<\Illuminate\Console\Command>>
      */
     protected $commands = [
         Commands\MakeMigrationsCommand::class,
@@ -69,6 +72,8 @@ class ServiceProvider extends AddonServiceProvider
     public function register()
     {
         $this->config = $this->app->get(Config::class);
+
+        $this->app->register(RequestUsageServiceProvider::class);
     }
 
     protected function registerTypes()

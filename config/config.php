@@ -14,10 +14,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Blink Store Key
+    | Statamic Type Table Prefixes
     |--------------------------------------------------------------------------
     |
-    | Used for Spatie Blick per request cache.
+    | Prefix used for Eloquent models of Statamic Types.
     |
     */
     'table_prefix' => 'statamic_',
@@ -102,6 +102,20 @@ return [
             'query' => \FewFar\Stacheless\Database\AssetQueryBuilder::class,
             'asset' => \FewFar\Stacheless\Assets\Asset::class,
         ],
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Request Usage
+    |--------------------------------------------------------------------------
+    |
+    | Config to manage settings when using the Request Usage caching system.
+    |
+    */
+    'request_usage' => [
+        'cache_store' => env('STACHELESS_REQUEST_USAGE_CACHE_STORE', null),
+        'cache_key_prefix' => env('STACHELESS_REQUEST_USAGE_CACHE_KEY_PREFIX', 'request_usage::'),
     ],
 
 ];

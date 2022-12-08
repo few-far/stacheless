@@ -7,11 +7,9 @@ use Statamic\Contracts\Assets\Asset;
 use Statamic\Contracts\Assets\AssetRepository as RepositoryContract;
 use Statamic\Contracts\Assets\QueryBuilder;
 use Statamic\Facades\AssetContainer;
-use Statamic\Facades\URL;
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection as IlluminateCollection;
+use Illuminate\Support\Collection;
 use Statamic\Assets\AssetCollection;
-use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
 class AssetRepository extends BaseRepository implements RepositoryContract
@@ -23,6 +21,12 @@ class AssetRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeKey = 'assets';
 
+    /**
+     * Makes where query attributes for searching for this Type by key.
+     *
+     * @param string  $key
+     * @return array
+     */
     protected function makeWhereArgsFromKey($key)
     {
         [$container, $path] = explode('::', $key, 2);
@@ -30,6 +34,12 @@ class AssetRepository extends BaseRepository implements RepositoryContract
         return compact('container', 'path');
     }
 
+    /**
+     * Makes where query attributes for searching for this Type.
+     *
+     * @param T  $type
+     * @return array
+     */
     protected function makeWhereArgs($type)
     {
         return [
@@ -38,9 +48,16 @@ class AssetRepository extends BaseRepository implements RepositoryContract
         ];
     }
 
+    /**
+     * Hydrates the Repository’s Type from the given Model.
+     *
+     * @param  T  $type
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
     protected function hydrateType($type, $model)
     {
-        return $type
+        $type
             ->setModel($model)
             ->path($model->path)
             ->container(AssetContainer::findByHandle($model->container))
@@ -48,9 +65,16 @@ class AssetRepository extends BaseRepository implements RepositoryContract
             ->syncOriginal();
     }
 
+    /**
+     * Hydrates the Repository’s Model from the given Type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  T  $type
+     * @return void
+     */
     protected function hydrateModel($model, $type)
     {
-        return $model->fill([
+        $model->fill([
             'container' => $type->containerHandle(),
             'path' => $type->path(),
             'folder' => $type->folder(),
@@ -59,16 +83,36 @@ class AssetRepository extends BaseRepository implements RepositoryContract
         ]);
     }
 
-    public function all(): IlluminateCollection
+    /**
+     * Loads all types from the database for this Repository.
+     *
+     * Types are stored in Blink individually and the collection as a whole.
+     *
+     * @return \Statamic\Assets\AssetCollection<T>
+     */
+    public function all(): Collection
     {
         return AssetCollection::make(parent::all());
     }
 
+    /**
+     * Finds all assets in the given container.
+     *
+     * @param  string  $container
+     * @return \Statamic\Assets\AssetCollection<T>
+     */
     public function whereContainer(string $container)
     {
         return AssetContainer::find($container)->assets();
     }
 
+    /**
+     * Finds all assets in the given folder and container.
+     *
+     * @param  string  $folder
+     * @param  string  $container
+     * @return \Statamic\Assets\AssetCollection<T>
+     */
     public function whereFolder(string $folder, string $container)
     {
         return AssetContainer::find($container)->assets($folder);

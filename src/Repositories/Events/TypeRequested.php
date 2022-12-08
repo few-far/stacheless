@@ -2,12 +2,15 @@
 
 namespace FewFar\Stacheless\Repositories\Events;
 
-use Illuminate\Foundation\Events\Dispatchable;
-
 class TypeRequested
 {
-    use Dispatchable;
-
+    /**
+     * Creates an instance of the Event.
+     *
+     * @param  mixed  $type
+     * @var mixed  $type
+     * @return void
+     */
     public function __construct(public $type)
     {
     }

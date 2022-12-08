@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    image: registry.gitlab.com/few-far/docker-images/php:1.6.1
+    environment:
+      SKIP_APP_CACHE: "true"
+    volumes:
+      - ./:/var/www/app/:delegated
+    healthcheck:
+      disable: true
+
+  db:
+    image: postgres:14.5-alpine
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=testing"
+      - "POSTGRES_PASSWORD=postgres"
+
+  adminer:
+    image: adminer:4.8.1
+    ports:
+      - 8080:8080
+
+volumes:
+  database:

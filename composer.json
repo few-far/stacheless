@@ -2,7 +2,8 @@
     "name": "few-far/stacheless",
     "autoload": {
         "psr-4": {
-            "FewFar\\Stacheless\\": "src"
+            "FewFar\\Stacheless\\": "src",
+            "Tests\\": "tests"
         }
     },
     "extra": {
@@ -17,7 +18,8 @@
         }
     },
     "require-dev": {
-        "statamic/cms": "3.3.49"
+        "statamic/cms": "3.3.52",
+        "orchestra/testbench": "^7"
     },
     "require": {
         "engageinteractive/laravel-config-provider": "^1.0"

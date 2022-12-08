@@ -1,13 +1,17 @@
 # Stacheless
 
-> Stacheless is a Statamic addon to run CMS data through Eloquent.
+> Stacheless is a [Statamic](https://www.statamic.com/) addon to run CMS data through Eloquent.
 
 ## Compatibility with Statamic
 
+Stacheless Repositories do not subclass the Statamic as implementation details are different. Instead it implements the interfaces setout by Statamic. A consiquence of this is when Statamic adds new functionality (specifically methods) to their controllers there regularly is no automatic compatibility with the release.
+
+Unfortunately, this is difficult to avoid but this package is frequently updated to support the latest Statamic releases – usually within a few days!
+
 | Stacheless    | Statamic       |
 | ------------- | -------------- |
-| 0.1.10        | 3.3.48..3.3.49 |
-| 0.1.9         | 3.3.38..3.3.47 |
+| 0.1.10        | 3.3.48-3.3.49 |
+| 0.1.9         | 3.3.38-3.3.47 |
 
 ## Features
 
@@ -24,8 +28,14 @@ This addon provides multi-site supported Repository replacements for the file-ba
 - [X] Terms
 - [X] Assets
 - [X] Asset Containers
+
+For our currently usecases we don't need support for DB driven:
+
 - [ ] Forms
 - [ ] Submissions
+
+And for CMS configuration we actually check these into source control and have different images deployed which are config specific so there is no DB support for:
+
 - [ ] Blueprints
 - [ ] Fieldsets
 

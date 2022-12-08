@@ -138,7 +138,7 @@ class EntryRepository extends BaseRepository implements Contract
         }
 
         if ($substitute = Arr::get($this->substitutionsById, $id)) {
-            TypeRequested::dispatch($substitute);
+            event(new TypeRequested($substitute));
             return $substitute;
         }
 
