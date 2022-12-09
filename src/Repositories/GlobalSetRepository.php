@@ -65,7 +65,7 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
             });
     }
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
 

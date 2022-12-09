@@ -40,7 +40,7 @@ class EntryRepository extends BaseRepository implements Contract
      */
     protected $typeClass = EntryContract::class;
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         return $type
             ->id($model->id)
@@ -54,7 +54,7 @@ class EntryRepository extends BaseRepository implements Contract
             ->published($model->published);
     }
 
-    protected function hydrateModel($model, $type)
+    public function hydrateModel($model, $type)
     {
         return parent::hydrateModel($model, $type)->fill([
             'origin_id' => optional($type->origin())->id(),
@@ -74,12 +74,12 @@ class EntryRepository extends BaseRepository implements Contract
     {
     }
 
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [ 'id' => $type->id() ];
     }
 
-    protected function makeWhereArgsFromKey($key)
+    public function makeWhereArgsFromKey($key)
     {
         return [ 'id' => $key ];
     }

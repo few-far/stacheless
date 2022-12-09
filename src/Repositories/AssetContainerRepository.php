@@ -52,7 +52,7 @@ class AssetContainerRepository extends BaseRepository implements RepositoryContr
      * @param \FewFar\Stacheless\Database\AssetContainerModel  $model
      * @return null|\Statamic\Contracts\Assets\AssetContainer
      */
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
 

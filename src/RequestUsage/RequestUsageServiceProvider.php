@@ -20,6 +20,8 @@ class RequestUsageServiceProvider extends ServiceProvider
             Event::listen(TypeRequested::class, [$usage, 'handleEvent']);
 
             $this->app->terminating([$usage, 'save']);
+
+            return $usage;
         });
     }
 }

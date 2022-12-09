@@ -27,7 +27,7 @@ class NavigationRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = NavigationContract::class;
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
 

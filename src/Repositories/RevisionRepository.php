@@ -36,19 +36,19 @@ class RevisionRepository extends BaseRepository implements RepositoryContract
         return $this->make();
     }
 
-    protected function makeBlinkKey($key)
+    public function makeBlinkKey($key)
     {
         return "$this->typeKey::{$key['filename']}::{$key['key']}";
     }
 
-    protected function makeBlinkKeyForType($type)
+    public function makeBlinkKeyForType($type)
     {
         return $this->makeBlinkKey(
             $this->makeWhereArgs($type)
         );
     }
 
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [
             'key' => $type->key(),
@@ -91,7 +91,7 @@ class RevisionRepository extends BaseRepository implements RepositoryContract
         return parent::save($revision);
     }
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $yaml = YAML::parse($model->yaml);
 

@@ -31,7 +31,7 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
 

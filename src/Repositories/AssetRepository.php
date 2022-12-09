@@ -27,7 +27,7 @@ class AssetRepository extends BaseRepository implements RepositoryContract
      * @param string  $key
      * @return array
      */
-    protected function makeWhereArgsFromKey($key)
+    public function makeWhereArgsFromKey($key)
     {
         [$container, $path] = explode('::', $key, 2);
 
@@ -40,7 +40,7 @@ class AssetRepository extends BaseRepository implements RepositoryContract
      * @param T  $type
      * @return array
      */
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [
             'container' => $type->containerHandle(),
@@ -55,7 +55,7 @@ class AssetRepository extends BaseRepository implements RepositoryContract
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $type
             ->setModel($model)
@@ -72,7 +72,7 @@ class AssetRepository extends BaseRepository implements RepositoryContract
      * @param  T  $type
      * @return void
      */
-    protected function hydrateModel($model, $type)
+    public function hydrateModel($model, $type)
     {
         $model->fill([
             'container' => $type->containerHandle(),

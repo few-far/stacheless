@@ -6,8 +6,8 @@ use FewFar\Stacheless\Config;
 use FewFar\Stacheless\Repositories\Events\TypeRequested;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
-use Statamic\Contracts\Entries\Entry;
+use Statamic\Contracts\Assets\AssetRepository;
+use Statamic\Contracts\Entries\EntryRepository;
 
 class RequestUsage
 {
@@ -36,12 +36,19 @@ class RequestUsage
      */
     protected $key;
 
-        /**
+    /**
      * Package config.
      *
-     * @var \FewFar\Stacheless\Config
+     * @var \Statamic\Contracts\Assets\AssetRepository
      */
-    protected $config;
+    protected $assets;
+
+    /**
+     * Entry Repostory
+     *
+     * @var \Statamic\Contracts\Entries\EntryRepository
+     */
+    protected $entry;
 
     /**
      * Creates an instance of the class.
@@ -49,9 +56,11 @@ class RequestUsage
      * @param  \FewFar\Stacheless\Config  $config
      * @return void
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, EntryRepository $entries, AssetRepository $assets)
     {
         $this->config = $config;
+        $this->entries = $entries;
+        $this->assert = $assets;
     }
 
     /**

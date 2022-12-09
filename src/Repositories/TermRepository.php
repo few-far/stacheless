@@ -26,17 +26,17 @@ class TermRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
-    protected function makeBlinkKey($key)
+    public function makeBlinkKey($key)
     {
         return "$this->typeKey::{$key['taxonomy']}::{$key['slug']}";
     }
 
-    protected function makeBlinkKeyForType($type)
+    public function makeBlinkKeyForType($type)
     {
         return $this->makeBlinkKey($this->makeWhereArgs($type));
     }
 
-    protected function makeWhereArgsFromKey($key)
+    public function makeWhereArgsFromKey($key)
     {
         return [
             'slug' => $key['slug'],
@@ -44,7 +44,7 @@ class TermRepository extends BaseRepository implements RepositoryContract
         ];
     }
 
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [
             'slug' => $type->slug(),
@@ -52,7 +52,7 @@ class TermRepository extends BaseRepository implements RepositoryContract
         ];
     }
 
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
 
@@ -67,7 +67,7 @@ class TermRepository extends BaseRepository implements RepositoryContract
         $type->syncOriginal();
     }
 
-    protected function hydrateModel($model, $type)
+    public function hydrateModel($model, $type)
     {
         return parent::hydrateModel($model, $type)->fill([
             'slug' => $type->slug(),

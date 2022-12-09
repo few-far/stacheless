@@ -49,7 +49,7 @@ trait TypeRepository
      * @param T  $type
      * @return string
      */
-    protected function makeBlinkKeyForType($type)
+    public function makeBlinkKeyForType($type)
     {
         return $this->makeBlinkKey($type->id());
     }
@@ -60,7 +60,7 @@ trait TypeRepository
      * @param string  $key
      * @return array
      */
-    protected function makeWhereArgsFromKey($key)
+    public function makeWhereArgsFromKey($key)
     {
         return [ 'handle' => $key ];
     }
@@ -71,7 +71,7 @@ trait TypeRepository
      * @param T  $type
      * @return array
      */
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [ 'handle' => $type->handle() ];
     }
@@ -190,7 +190,7 @@ trait TypeRepository
      * @param  mixed  $key
      * @return null|\Illuminate\Database\Eloquent\Model
      */
-    protected function findModel($key)
+    public function findModel($key)
     {
         return $this->getModelClass()::query()
             ->where($this->makeWhereArgsFromKey($key))
@@ -206,7 +206,7 @@ trait TypeRepository
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    protected function hydrateType($type, $model)
+    public function hydrateType($type, $model)
     {
         throw new \BadMethodCallException('Repository doesn’t provide it’s own implementation of this method.');
     }
@@ -216,11 +216,11 @@ trait TypeRepository
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  T  $type
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Model  $model
      */
-    protected function hydrateModel($model, $type)
+    public function hydrateModel($model, $type)
     {
-        $model->fill([
+        return $model->fill([
             'json' => $type->fileData(),
             'yaml' => $type->fileContents(),
         ]);
@@ -280,7 +280,7 @@ trait TypeRepository
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    protected function saveModel($model)
+    public function saveModel($model)
     {
         $model->save();
     }

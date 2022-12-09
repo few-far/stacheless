@@ -15,7 +15,7 @@ trait ManagesLocales
      * @param array  $key
      * @return string
      */
-    protected function makeBlinkKey($key)
+    public function makeBlinkKey($key)
     {
         return "$this->typeKey::{$key['site']}::{$key['handle']}";
     }
@@ -26,7 +26,7 @@ trait ManagesLocales
      * @param T  $type
      * @return string
      */
-    protected function makeBlinkKeyForType($type)
+    public function makeBlinkKeyForType($type)
     {
         return $this->makeBlinkKey($this->makeWhereArgs($type));
     }
@@ -37,7 +37,7 @@ trait ManagesLocales
      * @param  T  $type
      * @return array
      */
-    protected function makeWhereArgs($type)
+    public function makeWhereArgs($type)
     {
         return [
             'handle' => $type->handle(),
@@ -52,7 +52,7 @@ trait ManagesLocales
      * @param  T  $type
      * @return void
      */
-    protected function hydrateModel($model, $type)
+    public function hydrateModel($model, $type)
     {
         $model->fill([
             'site' => $type->locale(),
