@@ -40,7 +40,6 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
             ->routes(Arr::get($data, 'route'))
             ->mount(Arr::get($data, 'mount'))
             ->dated(Arr::get($data, 'date', false))
-            ->ampable(Arr::get($data, 'amp', false))
             ->sites(Arr::get($data, 'sites') ?? (Site::hasMultiple() ? [] : [Site::default()->handle()]))
             ->template(Arr::get($data, 'template'))
             ->layout(Arr::get($data, 'layout'))

@@ -42,16 +42,22 @@ class EntryRepository extends BaseRepository implements Contract
 
     public function hydrateType($type, $model)
     {
-        return $type
+        $entry = $type
             ->id($model->id)
             ->locale($model->site)
             ->origin($model->origin_id)
             ->slug($model->slug)
-            ->date(Carbon::parse($model->date))
             ->collection($model->collection)
             ->data(YAML::parse($model->yaml))
             ->blueprint($model->blueprint)
             ->published($model->published);
+
+        // Statamic 4 now throws error if Collection isn't dated.
+        if ($entry->collection()?->dated() && $model->date) {
+            $entry->date(Carbon::parse($model->date));
+        }
+
+        return $entry;
     }
 
     public function hydrateModel($model, $type)
