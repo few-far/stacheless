@@ -10,7 +10,7 @@ Unfortunately, this is difficult to avoid but this package is frequently updated
 
 | Stacheless    | Statamic       |
 | ------------- | -------------- |
-| 0.1.13        | 4.0.0-4.1.3   |
+| 0.1.13-0.1.14 | 4.0.0-4.1.3   |
 | 0.1.11-0.1.12 | ???-3.4.11    |
 | 0.1.10        | 3.3.48-3.3.49 |
 | 0.1.9         | 3.3.38-3.3.47 |
