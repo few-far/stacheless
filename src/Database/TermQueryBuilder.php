@@ -2,14 +2,11 @@
 
 namespace FewFar\Stacheless\Database;
 
-use FewFar\Stacheless\Config;
-use Illuminate\Database\PostgresConnection;
 use Illuminate\Support\Arr;
 use Statamic\Contracts\Taxonomies\TermRepository;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Taxonomy;
 use Statamic\Query\EloquentQueryBuilder;
-use Statamic\Sites\Site;
 use Statamic\Taxonomies\TermCollection;
 
 class TermQueryBuilder extends EloquentQueryBuilder
@@ -17,6 +14,11 @@ class TermQueryBuilder extends EloquentQueryBuilder
     protected $real_columns = [
         'slug', 'taxonomy', 'json', 'yaml', 'created_at', 'updated_at',
     ];
+
+    public function builder()
+    {
+        return $this->builder;
+    }
 
     protected function transform($items, $columns = [])
     {
@@ -103,11 +105,15 @@ class TermQueryBuilder extends EloquentQueryBuilder
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
         if ($column === 'site') {
+            if ($value !== null && $operator === null) {
+                throw new \Exception('querying site isn\'t supported with an operator');
+            }
+
             $handles = Taxonomy::all()
                 ->filter(function ($taxonomy) use ($operator, $value) {
                     return $taxonomy->sites()
                         ->map(fn ($handle) => compact('handle'))
-                        ->where('handle', $operator, $value)
+                        ->where('handle', $operator->handle())
                         ->isNotEmpty();
                 })
                 ->map->handle();
@@ -160,6 +166,15 @@ class TermQueryBuilder extends EloquentQueryBuilder
     {
         $wrapped = Arr::wrap($columns);
         return empty($wrapped) ? ['*'] : $columns;
+    }
+
+    public function count()
+    {
+        if (func_num_args() > 0) {
+            throw new \Exception('notsupported');
+        }
+
+        return $this->builder->count();
     }
 
     public function __call($method, $args)

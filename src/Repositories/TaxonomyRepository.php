@@ -11,6 +11,8 @@ use Statamic\Facades\YAML;
 
 class TaxonomyRepository extends BaseRepository implements RepositoryContract
 {
+    protected $additionalPreviewTargets = [];
+
     /**
      * Statamic type "slug" used for config and Blink cache?
      *
@@ -68,5 +70,21 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
     public function handleExists(string $handle): bool
     {
         return $this->handles()->contains($handle);
+    }
+
+    public function addPreviewTargets($handle, $targets)
+    {
+        $targets = collect($this->additionalPreviewTargets[$handle] ?? [])
+            ->merge($targets)
+            ->unique(function ($target) {
+                return $target['format'];
+            })->all();
+
+        $this->additionalPreviewTargets = array_merge($this->additionalPreviewTargets, [$handle => $targets]);
+    }
+
+    public function additionalPreviewTargets($handle)
+    {
+        return collect($this->additionalPreviewTargets[$handle] ?? []);
     }
 }
