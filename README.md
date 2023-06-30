@@ -8,9 +8,9 @@ Stacheless Repositories do not subclass the Statamic as implementation details a
 
 Unfortunately, this is difficult to avoid but this package is frequently updated to support the latest Statamic releases – usually within a few days!
 
-| Stacheless    | Statamic       |
-| ------------- | -------------- |
-| 0.1.13-0.1.14 | 4.0.0-4.1.3   |
+| Stacheless    | Statamic      |
+| ------------- | ------------- |
+| 0.1.13-0.1.15 | 4.0.0-4.9.1   |
 | 0.1.11-0.1.12 | ???-3.4.11    |
 | 0.1.10        | 3.3.48-3.3.49 |
 | 0.1.9         | 3.3.38-3.3.47 |
