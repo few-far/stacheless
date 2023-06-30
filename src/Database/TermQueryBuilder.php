@@ -113,7 +113,7 @@ class TermQueryBuilder extends EloquentQueryBuilder
                 ->filter(function ($taxonomy) use ($operator, $value) {
                     return $taxonomy->sites()
                         ->map(fn ($handle) => compact('handle'))
-                        ->where('handle', $operator->handle())
+                        ->where('handle', is_string($operator) ? $operator : $operator->handle())
                         ->isNotEmpty();
                 })
                 ->map->handle();
