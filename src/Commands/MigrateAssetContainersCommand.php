@@ -2,17 +2,17 @@
 
 namespace FewFar\Stacheless\Commands;
 
-use FewFar\Stacheless\Repositories\TaxonomyRepository;
+use FewFar\Stacheless\Repositories\AssetContainerRepository;
 use Illuminate\Console\Command;
 
-class MigrateTaxonomiesCommand extends Command
+class MigrateAssetContainersCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'stacheless:migrate:taxonomies';
+    protected $signature = 'stacheless:migrate:asset-containers';
 
     /**
      * The console command description.
@@ -26,9 +26,9 @@ class MigrateTaxonomiesCommand extends Command
      *
      * @return int
      */
-    public function handle(TaxonomyRepository $repository)
+    public function handle(AssetContainerRepository $repository)
     {
-        $store = \Statamic\Facades\Stache::store('taxonomies');
+        $store = \Statamic\Facades\Stache::store('asset-containers');
 
         $this->info('Creating or Updating content in DB from Statamic Stache Stores.');
 

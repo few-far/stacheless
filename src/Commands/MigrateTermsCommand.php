@@ -2,17 +2,17 @@
 
 namespace FewFar\Stacheless\Commands;
 
-use FewFar\Stacheless\Repositories\EntryRepository;
+use FewFar\Stacheless\Repositories\TermRepository;
 use Illuminate\Console\Command;
 
-class MigrateEntriesCommand extends Command
+class MigrateTermsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'stacheless:migrate:entries';
+    protected $signature = 'stacheless:migrate:terms';
 
     /**
      * The console command description.
@@ -26,17 +26,17 @@ class MigrateEntriesCommand extends Command
      *
      * @return int
      */
-    public function handle(EntryRepository $repository)
+    public function handle(TermRepository $repository)
     {
-        $store = \Statamic\Facades\Stache::store('entries');
+        $store = \Statamic\Facades\Stache::store('terms');
 
         $this->info('Updating or creating content in DB from Statamic Stache Stores.');
 
         foreach ($store->discoverStores() as $store) {
-            foreach ($store->getItemsFromFiles() as $entry) {
-                $this->info('↳ ' . $entry->id() . ' - ' . $entry->uri());
+            foreach ($store->getItemsFromFiles() as $term) {
+                $this->info('↳ ' . $term->id() . ' - ' . $term->title());
 
-                $repository->save($entry);
+                $repository->save($term->term());
             }
         }
 

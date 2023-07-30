@@ -14,14 +14,14 @@ class MakeMigrationsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stacheless:migrations';
+    protected $signature = 'stacheless:migrate:migrations';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Generates Stacheless migrations.';
 
     /**
      * The filesystem instance.
@@ -71,6 +71,6 @@ class MakeMigrationsCommand extends Command
         }
 
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

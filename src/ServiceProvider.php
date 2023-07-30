@@ -30,15 +30,20 @@ class ServiceProvider extends AddonServiceProvider
      */
     protected $commands = [
         Commands\MakeMigrationsCommand::class,
+
+        Commands\MigrateAssetContainersCommand::class,
+        Commands\MigrateAssetsCommand::class,
         Commands\MigrateCollectionTreesCommand::class,
         Commands\MigrateCollectionsCommand::class,
         Commands\MigrateEntriesCommand::class,
+        Commands\MigrateGlobalSetsCommand::class,
         Commands\MigrateNavigationTreesCommand::class,
         Commands\MigrateNavigationsCommand::class,
         Commands\MigrateRevisionsCommand::class,
-        Commands\MigrateAssetsCommand::class,
+        Commands\MigrateTaxonomiesCommand::class,
+        Commands\MigrateTermsCommand::class,
+        Commands\MigrateUsersCommand::class,
     ];
-
 
     /**
      * Register any application services.

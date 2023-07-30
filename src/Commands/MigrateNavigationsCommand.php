@@ -12,34 +12,23 @@ class MigrateNavigationsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stacheless:navigation';
+    protected $signature = 'stacheless:migrate:navigations';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Migrates stache (file) based content to configured Stacheless Driver (DB).';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(NavigationRepository $repository)
     {
-        $repository = app(NavigationRepository::class);
-        $store = app(config('statamic.stache.stores.navigation.class'));
+        $store = \Statamic\Facades\Stache::store('navigation');
 
         $this->info('Creating or Updating content in DB from Statamic Stache Stores.');
 
@@ -48,6 +37,6 @@ class MigrateNavigationsCommand extends Command
             $repository->save($item);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

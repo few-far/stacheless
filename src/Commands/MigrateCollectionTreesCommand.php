@@ -12,34 +12,23 @@ class MigrateCollectionTreesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stacheless:collection-trees';
+    protected $signature = 'stacheless:migrate:collection-trees';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Migrates stache (file) based content to configured Stacheless Driver (DB).';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(CollectionTreeRepository $repository)
     {
-        $repository = app(CollectionTreeRepository::class);
-        $store = app(config('statamic.stache.stores.collection-trees.class'));
+        $store = \Statamic\Facades\Stache::store('collection-trees');
 
         $this->info('Creating or Updating content in DB from Statamic Stache Stores.');
 
@@ -48,6 +37,6 @@ class MigrateCollectionTreesCommand extends Command
             $repository->save($item);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

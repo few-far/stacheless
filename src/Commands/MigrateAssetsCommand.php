@@ -14,34 +14,23 @@ class MigrateAssetsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stacheless:assets';
+    protected $signature = 'stacheless:migrate:assets';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Migrates stache (file) based content to configured Stacheless Driver (DB).';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(AssetRepository $repository)
     {
-        $repository = app(AssetRepository::class);
-        $store = app(config('statamic.stache.stores.assets.class'));
+        $store = \Statamic\Facades\Stache::store('assets');
 
         $this->info('Creating or Updating content in DB from Statamic Stache Stores.');
 
@@ -67,6 +56,6 @@ class MigrateAssetsCommand extends Command
             );
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

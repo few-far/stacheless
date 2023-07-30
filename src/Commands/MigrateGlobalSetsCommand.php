@@ -2,17 +2,17 @@
 
 namespace FewFar\Stacheless\Commands;
 
-use FewFar\Stacheless\Repositories\TaxonomyRepository;
+use FewFar\Stacheless\Repositories\GlobalSetRepository;
 use Illuminate\Console\Command;
 
-class MigrateTaxonomiesCommand extends Command
+class MigrateGlobalSetsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'stacheless:migrate:taxonomies';
+    protected $signature = 'stacheless:migrate:global-sets';
 
     /**
      * The console command description.
@@ -26,14 +26,14 @@ class MigrateTaxonomiesCommand extends Command
      *
      * @return int
      */
-    public function handle(TaxonomyRepository $repository)
+    public function handle(GlobalSetRepository $repository)
     {
-        $store = \Statamic\Facades\Stache::store('taxonomies');
+        $store = \Statamic\Facades\Stache::store('globals');
 
         $this->info('Creating or Updating content in DB from Statamic Stache Stores.');
 
         foreach ($store->getItemsFromFiles() as $item) {
-            $this->info('↳ ' . $item->handle());
+            $this->info($item->handle());
             $repository->save($item);
         }
 

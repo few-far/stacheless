@@ -12,35 +12,23 @@ class MigrateRevisionsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stacheless:revisions';
+    protected $signature = 'stacheless:migrate:revisions';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Migrates stache (file) based content to configured Stacheless Driver (DB).';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(RevisionRepository $repository, RevisionRepository $stache)
     {
-        $repository = app(RevisionRepository::class);
-        $stache = app(\Statamic\Revisions\RevisionRepository::class);
-        $store = app(config('statamic.stache.stores.entries.class'));
+        $store = \Statamic\Facades\Stache::store('entries');
 
         $this->info('Updating or creating content in DB from Statamic Stache Stores.');
 
@@ -65,6 +53,6 @@ class MigrateRevisionsCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
