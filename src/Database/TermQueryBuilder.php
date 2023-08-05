@@ -124,12 +124,20 @@ class TermQueryBuilder extends EloquentQueryBuilder
         }
 
         if ($column === 'collection') {
-            throw new \Exception('here');
+            // We need to dynamically create the args so that the Laravel
+            // Collection honors the nullable $value.
+            $args = ['handle', $operator];
+
+            if (func_num_args() > 2) {
+                $args[] = $value;
+            }
 
             $handles = Collection::all()
-                ->filter(function ($collection) use ($operator, $value) {
-                    return collect([ 'handle' => $collection->handle() ])
-                        ->where('handle', $operator, $value)
+                ->filter(function ($collection) use ($args) {
+
+                    return collect()
+                        ->push([ 'handle' => $collection->handle() ])
+                        ->where(...$args)
                         ->isNotEmpty();
                 })
                 ->flatMap->taxonomies()

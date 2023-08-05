@@ -6,11 +6,11 @@
 
 Stacheless Repositories do not subclass the Statamic as implementation details are different. Instead it implements the interfaces setout by Statamic. A consiquence of this is when Statamic adds new functionality (specifically methods) to their controllers there regularly is no automatic compatibility with the release.
 
-Unfortunately, this is difficult to avoid but this package is frequently updated to support the latest Statamic releases – usually within a few days!
+Unfortunately, this is difficult to avoid but this package is frequently updated to support the latest Statamic releases – usually within a few days.
 
 | Stacheless    | Statamic      |
 | ------------- | ------------- |
-| 0.1.13-0.1.15 | 4.0.0-4.13.2  |
+| 0.1.13-0.1.16 | 4.0.0-4.15.0  |
 | 0.1.11-0.1.12 | ???-3.4.11    |
 | 0.1.10        | 3.3.48-3.3.49 |
 | 0.1.9         | 3.3.38-3.3.47 |
@@ -31,7 +31,7 @@ This addon provides multi-site supported Repository replacements for the file-ba
 - [X] Assets
 - [X] Asset Containers
 
-For our currently usecases we don't need support for DB driven:
+For our currently usecases we don’t need support for DB driven:
 
 - [ ] Forms
 - [ ] Submissions
