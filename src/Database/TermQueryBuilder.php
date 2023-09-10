@@ -99,6 +99,31 @@ class TermQueryBuilder extends EloquentQueryBuilder
             return $this;
         }
 
+        if ($column === 'id') {
+            $termsByTaxonomy = collect($values)
+                ->map(function ($value) {
+                    $segments = explode('::', $value);
+
+                    return [
+                        'taxonomy' => Arr::get($segments, 0),
+                        'term' => Arr::get($segments, 1),
+                    ];
+                })
+                ->groupBy('taxonomy')
+                ->map(fn ($values) => collect($values)->pluck('term')->all());
+
+            $this->builder->where(function ($query) use ($termsByTaxonomy) {
+                foreach ($termsByTaxonomy as $taxonomy => $terms) {
+                    $query->orWhere(function ($query) use ($taxonomy, $terms) {
+                        $query->where('taxonomy', $taxonomy);
+                        $query->whereIn('slug', $terms);
+                    });
+                }
+            });
+
+            return $this;
+        }
+
         return parent::whereIn($column, $values, $boolean);
     }
 
@@ -144,6 +169,17 @@ class TermQueryBuilder extends EloquentQueryBuilder
                 ->map->handle();
 
             $this->builder->whereIn('taxonomy', $handles, $boolean);
+
+            return $this;
+        }
+
+        if ($column === 'id') {
+            $segments = explode('::', func_num_args() > 2 ? $value : $operator);
+            $taxonomy_handle = Arr::get($segments, 0);
+            $term_handle = Arr::get($segments, 1);
+
+            $this->builder->where('slug', $term_handle);
+            $this->builder->where('taxonomy', $taxonomy_handle);
 
             return $this;
         }

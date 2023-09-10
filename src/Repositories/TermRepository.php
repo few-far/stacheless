@@ -88,7 +88,7 @@ class TermRepository extends BaseRepository implements RepositoryContract
     public function whereTaxonomy(string $handle)
     {
         return ($store = $this->getBlinkStore())->once('terms::' . $handle, function () use ($handle, $store) {
-            $this->getModelClass()::where('taxonomy', $handle)
+            return $this->getModelClass()::where('taxonomy', $handle)
                 ->get()
                 ->map(fn ($model) => $this->toType($model))
                 ->each(fn ($type) => $this->storeInCache($type, $store));
@@ -100,14 +100,13 @@ class TermRepository extends BaseRepository implements RepositoryContract
         $store = $this->getBlinkStore();
 
         $missing = collect($handles)
-            ->filter(fn ($handle) => $store->has("terms::$handle"));
+            ->reject(fn ($handle) => $store->has("terms::$handle"));
 
         if ($missing->isNotEmpty()) {
             $entriesByCollection = $this->query()
                 ->whereIn('taxonomy', $handles)
                 ->get()
-                ->groupBy
-                ->taxonmyHandle();
+                ->groupBy->taxonomyHandle();
 
             foreach ($entriesByCollection as $handle => $entries) {
                 $store->put("terms::$handle", $entries);
