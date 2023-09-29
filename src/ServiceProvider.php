@@ -165,6 +165,11 @@ class ServiceProvider extends AddonServiceProvider
             \Statamic\Contracts\Globals\GlobalRepository::class,
             $this->config->get('types.global_sets.repository')
         );
+
+        Statamic::repository(
+            \Statamic\Contracts\Globals\GlobalVariablesRepository::class,
+            $this->config->get('types.global_sets.variables_repository')
+        );
     }
 
     protected function register_taxonomies()

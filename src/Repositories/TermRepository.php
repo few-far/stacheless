@@ -13,7 +13,7 @@ use Statamic\Facades\YAML;
 class TermRepository extends BaseRepository implements RepositoryContract
 {
     /**
-     * Statamic type "slug" used for config and Blink cache?
+     * Statamic type "slug" used for config and Blink cache.
      *
      * @var string
      */

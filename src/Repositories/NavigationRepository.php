@@ -5,16 +5,14 @@ namespace FewFar\Stacheless\Repositories;
 use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Structures\Nav as NavigationContract;
 use Statamic\Contracts\Structures\NavigationRepository as RepositoryContract;
-use Statamic\Facades\Blink;
-use Statamic\Facades\Entry;
-use Statamic\Facades\Site;
+
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stache;
 
 class NavigationRepository extends BaseRepository implements RepositoryContract
 {
     /**
-     * Statamic type "slug" used for config and Blink cache?
+     * Statamic type "slug" used for config and Blink cache.
      *
      * @var string
      */

@@ -74,6 +74,7 @@ return [
             'enabled' => env('STACHELESS_GLOBAL_SETS', true),
             'repository' => \FewFar\Stacheless\Repositories\GlobalSetRepository::class,
             'model' => \FewFar\Stacheless\Database\GlobalSetModel::class,
+            'variables_repository' => \FewFar\Stacheless\Repositories\GlobalVariablesRepository::class,
             'variables_model' => \FewFar\Stacheless\Database\GlobalVariablesModel::class,
         ],
 

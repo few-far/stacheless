@@ -14,7 +14,7 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
     protected $additionalPreviewTargets = [];
 
     /**
-     * Statamic type "slug" used for config and Blink cache?
+     * Statamic type "slug" used for config and Blink cache.
      *
      * @var string
      */
