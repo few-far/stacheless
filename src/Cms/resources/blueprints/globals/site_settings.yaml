@@ -1,0 +1,231 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: not_found_entry
+            field:
+              max_items: 1
+              mode: default
+              create: true
+              collections:
+                - pages
+              display: '404 Not Found Page'
+              type: entries
+              icon: entries
+              instructions: 'Page shown when a 404 Not Found happens.'
+              listable: hidden
+              instructions_position: above
+          -
+            handle: header_call_to_action
+            field:
+              collections:
+                - pages
+                - landings
+                - news
+              enabled: always
+              type: cta
+              display: 'Header Call to Action'
+              icon: link
+              instructions: 'Primary CTA in the header navigation.'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              hide_display: false
+          -
+            handle: form_submission_email
+            field:
+              input_type: text
+              antlers: false
+              default: no-reply@mail.fw-n.fr
+              display: 'Form Submission Email'
+              type: text
+              icon: text
+              instructions: 'Who to email when a form is filled out, use commas for multiple emails.'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              always_save: false
+          -
+            handle: form_agreement_label
+            field:
+              collapse: false
+              always_show_set_button: false
+              previews: true
+              buttons:
+                - bold
+                - italic
+                - anchor
+              save_html: false
+              toolbar_mode: fixed
+              link_noopener: false
+              link_noreferrer: false
+              target_blank: false
+              link_collections:
+                - pages
+                - news
+              reading_time: false
+              fullscreen: true
+              allow_source: true
+              enable_input_rules: true
+              enable_paste_rules: true
+              antlers: false
+              remove_empty_nodes: false
+              display: 'Form Agreement Label'
+              type: bard
+              icon: bard
+              instructions: 'Message show for form T&Cs agreement checkbox.'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              always_save: false
+      -
+        display: 'Notification bar'
+        fields:
+          -
+            handle: notification_bar_description
+            field:
+              buttons:
+                - bold
+                - italic
+                - anchor
+              smart_typography: false
+              save_html: false
+              inline: true
+              toolbar_mode: fixed
+              reading_time: false
+              word_count: false
+              fullscreen: true
+              allow_source: true
+              enable_input_rules: true
+              enable_paste_rules: true
+              remove_empty_nodes: false
+              antlers: false
+              link_noopener: false
+              link_noreferrer: false
+              target_blank: false
+              always_show_set_button: false
+              collapse: false
+              previews: true
+              type: bard
+              display: Message
+              icon: bard
+              instructions: 'Text to show at the top of page when enabled.'
+              width: 75
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+          -
+            handle: notification_bar_enabled
+            field:
+              default: false
+              type: toggle
+              display: 'Show notification bar'
+              icon: toggle
+              instructions: 'Show or hide the notification bar.'
+              width: 25
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+  footer:
+    display: Footer
+    sections:
+      -
+        fields:
+          -
+            handle: footer_description
+            field: mixin_common.description
+          -
+            handle: links
+            field:
+              fields:
+                -
+                  handle: asset
+                  field:
+                    mode: list
+                    container: assets
+                    restrict: false
+                    allow_uploads: false
+                    show_filename: true
+                    max_files: 1
+                    display: Asset
+                    type: assets
+                    icon: assets
+                    listable: hidden
+                    instructions_position: above
+                    read_only: false
+                    width: 50
+                -
+                  handle: url
+                  field:
+                    placeholder: 'https://...'
+                    input_type: text
+                    antlers: false
+                    display: Url
+                    type: text
+                    icon: text
+                    listable: hidden
+                    instructions_position: above
+                    read_only: false
+                    width: 50
+              mode: table
+              add_row: 'Add link'
+              reorderable: true
+              display: Links
+              type: grid
+              icon: grid
+              instructions: 'Used to link to social.'
+              listable: hidden
+              instructions_position: above
+          -
+            handle: footnotes
+            field:
+              fields:
+                -
+                  handle: description
+                  field: mixin_common.description
+              mode: table
+              add_row: 'Add footnote'
+              reorderable: true
+              fullscreen: true
+              type: grid
+              display: Footnotes
+              icon: grid
+              instructions: 'Used for charity and company numbers.'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              hide_display: false
+  seo:
+    display: SEO
+    sections:
+      -
+        fields:
+          -
+            handle: seo_description
+            field:
+              input_type: text
+              character_limit: 150
+              antlers: false
+              display: Description
+              type: text
+              icon: text
+              listable: hidden
+          -
+            handle: seo_image
+            field:
+              mode: grid
+              container: assets
+              restrict: false
+              allow_uploads: false
+              max_files: 1
+              display: 'Social Image'
+              type: assets
+              icon: assets
+              listable: hidden

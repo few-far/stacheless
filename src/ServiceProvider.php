@@ -2,6 +2,7 @@
 
 namespace FewFar\Stacheless;
 
+use FewFar\Stacheless\Cms\CmsServiceProvider;
 use FewFar\Stacheless\Commands;
 use FewFar\Stacheless\RequestUsage\RequestUsageServiceProvider;
 use Statamic\Providers\AddonServiceProvider;
@@ -17,11 +18,11 @@ class ServiceProvider extends AddonServiceProvider
     protected $config;
 
     /**
-     * Instance of Statamic Addon
-     *
-     * @var \Statamic\Extend\Addon
+     * @var list<string> - Paths on disk
      */
-    protected $addon;
+    protected $scripts = [
+        '/vendor/few-far/stacheless/cp.js',
+    ];
 
     /**
      * Commands that Statamic Addon will register
@@ -29,6 +30,8 @@ class ServiceProvider extends AddonServiceProvider
      * @var array<class-string<\Illuminate\Console\Command>>
      */
     protected $commands = [
+        Commands\MakeCpPublicVendorSymlinkCommand::class,
+
         Commands\MakeMigrationsCommand::class,
 
         Commands\MigrateAssetContainersCommand::class,
@@ -61,9 +64,11 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->mergeConfigFrom($origin, $this->config->configKey());
 
-        $this->publishes([
-            $origin => config_path(str_replace('.', '/', $this->config->configKey())),
-        ], "stacheless-config");
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $origin => config_path(str_replace('.', '/', $this->config->configKey())),
+            ], "stacheless-config");
+        }
 
         return $this;
     }
@@ -78,6 +83,7 @@ class ServiceProvider extends AddonServiceProvider
     {
         $this->config = $this->app->get(Config::class);
 
+        $this->app->register(CmsServiceProvider::class);
         $this->app->register(RequestUsageServiceProvider::class);
     }
 

@@ -1,0 +1,31 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: page
+            field:
+              max_items: 1
+              mode: default
+              create: false
+              collections:
+                - pages
+                - landings
+                - news
+              display: Page
+              type: entries
+              icon: entries
+              instructions: 'Link to a page on the site, only used if URL is blank.'
+              listable: hidden
+              instructions_position: above
+          -
+            handle: open_in_new_tab
+            field:
+              default: false
+              display: 'Open in new tab'
+              type: toggle
+              icon: toggle
+              listable: hidden
+              instructions_position: above

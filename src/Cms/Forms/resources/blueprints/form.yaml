@@ -1,0 +1,403 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: title
+        field:
+          type: text
+          required: true
+          validate:
+            - required
+      -
+        handle: label
+        field:
+          display: 'Public name'
+          type: text
+          instructions: 'What to show when used in dropdowns. Defaults to Title.'
+          listable: hidden
+      -
+        handle: fields
+        field:
+          collapse: true
+          previews: true
+          sets:
+            text:
+              display: 'Short Text'
+              fields:
+                -
+                  handle: name
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Name
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Used as a reference.'
+                    validate:
+                      - required
+                -
+                  handle: label
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Label
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Shown above field.'
+                    validate:
+                      - required
+                -
+                  handle: width
+                  field:
+                    options:
+                      50: 50%
+                      100: 100%
+                    multiple: false
+                    clearable: false
+                    searchable: false
+                    taggable: false
+                    push_tags: false
+                    cast_booleans: false
+                    default: '100'
+                    display: Width
+                    type: select
+                    icon: select
+                    instructions: 'Width of the field in the form'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: placeholder
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Placeholder
+                    type: text
+                    icon: text
+                    instructions: 'Shown when field is empty.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: validation_rules
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: 'Validation Rules'
+                    type: text
+                    icon: text
+                    instructions: 'See <a href="https://laravel.com/docs/10.x/validation#available-validation-rules" target="_">documentation</a>.'
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    width: 33
+                -
+                  handle: required
+                  field:
+                    default: false
+                    display: 'Required?'
+                    type: toggle
+                    icon: toggle
+                    instructions: 'Optional by default.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+            textarea:
+              display: 'Long Text'
+              fields:
+                -
+                  handle: name
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Name
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Used as a reference.'
+                    validate:
+                      - required
+                -
+                  handle: label
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Label
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Shown above field.'
+                    validate:
+                      - required
+                -
+                  handle: width
+                  field:
+                    options:
+                      50: 50%
+                      100: 100%
+                    multiple: false
+                    clearable: false
+                    searchable: false
+                    taggable: false
+                    push_tags: false
+                    cast_booleans: false
+                    default: '100'
+                    display: Width
+                    type: select
+                    icon: select
+                    instructions: 'Width of the field in the form'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: placeholder
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Placeholder
+                    type: text
+                    icon: text
+                    instructions: 'Shown when field is empty.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: validation_rules
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: 'Validation Rules'
+                    type: text
+                    icon: text
+                    instructions: 'See <a href="https://laravel.com/docs/9.x/validation#available-validation-rules" target="_">documentation</a>.'
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    width: 33
+                -
+                  handle: required
+                  field:
+                    default: false
+                    display: 'Required?'
+                    type: toggle
+                    icon: toggle
+                    instructions: 'Optional by default.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+            select:
+              display: 'Dropdown List'
+              fields:
+                -
+                  handle: name
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Name
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Used as a reference.'
+                    validate:
+                      - required
+                -
+                  handle: label
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Label
+                    type: text
+                    icon: text
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    instructions: 'Shown above field.'
+                    validate:
+                      - required
+                -
+                  handle: width
+                  field:
+                    options:
+                      50: 50%
+                      100: 100%
+                    multiple: false
+                    clearable: false
+                    searchable: false
+                    taggable: false
+                    push_tags: false
+                    cast_booleans: false
+                    default: '100'
+                    display: Width
+                    type: select
+                    icon: select
+                    instructions: 'Width of the field in the form'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: placeholder
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Placeholder
+                    type: text
+                    icon: text
+                    instructions: 'Shown when field is empty.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: validation_rules
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: 'Validation Rules'
+                    type: text
+                    icon: text
+                    instructions: 'See <a href="https://laravel.com/docs/9.x/validation#available-validation-rules" target="_">documentation</a>.'
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                    width: 33
+                -
+                  handle: required
+                  field:
+                    default: false
+                    display: 'Required?'
+                    type: toggle
+                    icon: toggle
+                    instructions: 'Optional by default.'
+                    width: 33
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+                -
+                  handle: options
+                  field:
+                    mode: dynamic
+                    display: Options
+                    type: array
+                    icon: array
+                    instructions: 'Shown in dropdown list'
+                    listable: hidden
+                    instructions_position: above
+                    visibility: visible
+                    always_save: false
+          display: Fields
+          type: replicator
+          icon: replicator
+          instructions: 'Fields shown on the Form.'
+          listable: hidden
+          instructions_position: above
+          visibility: visible
+          always_save: false
+      -
+        handle: _submissions
+        field:
+          display: Submissions
+          type: cms_form_submissions
+          icon: entires
+          listable: false
+          instructions_position: above
+          visibility: visible
+          always_save: true
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: slug
+        field:
+          type: slug
+          localizable: true
+      -
+        handle: submit_label
+        field:
+          placeholder: Submit
+          input_type: text
+          antlers: false
+          display: 'Submit Label'
+          type: text
+          icon: text
+          instructions: 'Text for submit button'
+          listable: hidden
+          instructions_position: above
+          visibility: visible
+          always_save: false
+  thank_you:
+    display: 'Thank you'
+    fields:
+      -
+        handle: submitted_message
+        field:
+          placeholder: 'Thank you for filling out the form.'
+          input_type: text
+          antlers: false
+          display: 'Submitted Message'
+          type: text
+          icon: text
+          instructions: 'Message shown once the form has been filled out.'
+          listable: hidden
+          instructions_position: above
+          visibility: visible
+          always_save: false
+      -
+        handle: submitted_content
+        field: mixin_common.content
+        config:
+          buttons:
+            - bold
+            - italic
+            - small
+            - unorderedlist
+            - orderedlist
+            - removeformat
+            - anchor
+          display: 'Submitted Content'
+          instructions: 'Area to provide link to download asset for completing the form. Overrides message above.'
+          listable: false
+title: Form

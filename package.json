@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "npx esbuild src/Cms/cp.js --bundle --outfile=dist/public/js/cp.js",
+    "watch": "npx esbuild src/Cms/cp.js --bundle --outfile=dist/public/js/cp.js --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.5"
+  }
+}
