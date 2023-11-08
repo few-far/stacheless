@@ -10,6 +10,7 @@ Unfortunately, this is difficult to avoid but this package is frequently updated
 
 | Stacheless    | Statamic      |
 | ------------- | ------------- |
+| 1.0.0         | 4.32.0        |
 | 0.1.19        | 4.23.2        |
 | 0.1.13-0.1.18 | 4.0.0-4.15.0  |
 | 0.1.11-0.1.12 | ???-3.4.11    |
@@ -26,7 +27,8 @@ This addon provides multi-site supported Repository replacements for the file-ba
 - [x] Collection Trees
 - [x] Navigations
 - [x] Navigation Trees
-- [X] Globals
+- [X] Global Sets
+- [X] Global Variables
 - [X] Taxonomies
 - [X] Terms
 - [X] Assets
@@ -66,11 +68,11 @@ STACHELESS_GLOBALS=false
 Then publish and run the migrations:
 
 ```
-$ php artisan stacheless:migrations
+$ php artisan stacheless:make:migrations
 $ php artisan migrate
 ```
 
-You’re good to go!
+You’re good to go.
 
 For finer control you can publish the package’s config:
 
