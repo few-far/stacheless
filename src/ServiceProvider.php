@@ -5,6 +5,7 @@ namespace FewFar\Stacheless;
 use FewFar\Stacheless\Cms\CmsServiceProvider;
 use FewFar\Stacheless\Commands;
 use FewFar\Stacheless\RequestUsage\RequestUsageServiceProvider;
+use Illuminate\Support\Str;
 use Statamic\Providers\AddonServiceProvider;
 use Statamic\Statamic;
 
@@ -16,13 +17,6 @@ class ServiceProvider extends AddonServiceProvider
      * @var \FewFar\Stacheless\Config
      */
     protected $config;
-
-    /**
-     * @var list<string> - Paths on disk
-     */
-    protected $scripts = [
-        '/vendor/few-far/stacheless/cp.js',
-    ];
 
     /**
      * Commands that Statamic Addon will register
@@ -56,6 +50,14 @@ class ServiceProvider extends AddonServiceProvider
     public function boot()
     {
         parent::boot();
+
+        $this->app->booted(function () {
+            $name = Str::lower($this->getAddon()->name());
+            $version = $this->getAddon()->version();
+
+            // Use "id" in query parameter to prevent statamic caching the url.
+            Statamic::script($name, "cp.js?id=".md5($version));
+        });
     }
 
     protected function bootConfig()
