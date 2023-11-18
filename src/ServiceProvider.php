@@ -52,8 +52,13 @@ class ServiceProvider extends AddonServiceProvider
         parent::boot();
 
         $this->app->booted(function () {
-            $name = Str::lower($this->getAddon()->name());
-            $version = $this->getAddon()->version();
+            $addon = !app()->environment('testing') ? $this->getAddon() : new class {
+                public function name() { return 'stacheless-testing'; }
+                public function version() { return 'testing'; }
+            };
+
+            $name = Str::lower($addon->name());
+            $version = $addon->version();
 
             // Use "id" in query parameter to prevent statamic caching the url.
             Statamic::script($name, "cp.js?id=".md5($version));

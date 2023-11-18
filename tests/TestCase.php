@@ -2,6 +2,10 @@
 
 namespace Tests;
 
+use Statamic\Facades\GlobalSet;
+use Statamic\Facades\Site;
+use Statamic\Globals\Variables;
+
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
@@ -12,6 +16,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $app->booted(function () {
+            // $site_settings = GlobalSet::make('site_settings')->title('Site Settings')->save();
+            // $site_settings->addLocalization(
+            //     tap($site_settings->makeLocalization(Site::default()->handle()), function (Variables $variables) {
+            //         // $variables->set('not_found_entry', $not_found->id());
+            //     })
+            // );
+        });
     }
 
     /**
@@ -24,6 +36,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
+            \Statamic\Providers\StatamicServiceProvider::class,
             \FewFar\Stacheless\ServiceProvider::class,
         ];
     }

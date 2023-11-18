@@ -9,7 +9,7 @@
     "extra": {
         "statamic": {
             "name": "Stacheless",
-            "description": "Stacheless addon"
+            "description": "Few and Far CMS addon"
         },
         "laravel": {
             "providers": [
@@ -18,15 +18,15 @@
         }
     },
     "require-dev": {
-        "statamic/cms": "4.1.3",
-        "orchestra/testbench": "^7"
-    },
-    "require": {
-        "engageinteractive/laravel-config-provider": "^1.0"
+        "statamic/cms": "4.32.0",
+        "orchestra/testbench": "^8",
+        "pestphp/pest": "^2.24",
+        "pestphp/pest-plugin-laravel": "^2.2"
     },
     "config": {
         "allow-plugins": {
-            "pixelfear/composer-dist-plugin": true
+            "pixelfear/composer-dist-plugin": true,
+            "pestphp/pest-plugin": true
         }
     }
 }

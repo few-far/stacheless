@@ -47,7 +47,7 @@ trait BuildsModels
             return Arr::get($data, $key);
         }
 
-        else if ($data instanceof Augmented || method_exists($data, 'get')) {
+        else if ($data && ($data instanceof Augmented || method_exists($data, 'get'))) {
             return $data->get($key);
         }
 
