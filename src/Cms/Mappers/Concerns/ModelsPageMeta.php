@@ -4,7 +4,7 @@ namespace FewFar\Stacheless\Cms\Mappers\Concerns;
 
 use Illuminate\Support\Arr;
 
-trait ModelsBreadcrumb
+trait ModelsPageMeta
 {
     protected string $pageTitleSeparator = "–";
 

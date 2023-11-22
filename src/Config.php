@@ -11,13 +11,12 @@ class Config
      */
     protected $configKey = 'vendor.fewfar.stacheless';
 
-
     /**
      * Gets key to use when retrieving config values.
      *
      * @var string
      */
-    protected function configKey()
+    public function configKey()
     {
         return $this->configKey;
     }
@@ -32,10 +31,10 @@ class Config
     public function get($key = null, $default = null)
     {
         if (is_null($key)) {
-            return Config::get($this->configKey());
+            return config()->get($this->configKey());
         }
 
-        return Config::get($this->configKey() . '.' . $key, $default);
+        return config()->get($this->configKey() . '.' . $key, $default);
     }
 
     /**
@@ -47,6 +46,6 @@ class Config
      */
     public function set($key, $value)
     {
-        Config::set($this->configKey() . '.' . $key, $value);
+        config()->set($this->configKey() . '.' . $key, $value);
     }
 }
