@@ -31,6 +31,17 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
      */
     protected $typeClass = TypeContract::class;
 
+    protected function normalizePreviewTargets($targets)
+    {
+        return collect($targets)->map(function ($target) {
+            return [
+                'format' => $target['url'],
+                'label' => $target['label'],
+                'refresh' => $target['refresh'] ?? true,
+            ];
+        })->all();
+    }
+
     public function hydrateType($type, $model)
     {
         $data = YAML::parse($model->yaml);
@@ -50,7 +61,13 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
             ->structureContents(Arr::get($data, 'structure'))
             ->sortField(Arr::get($data, 'sort_by'))
             ->sortDirection(Arr::get($data, 'sort_dir'))
-            ->taxonomies(Arr::get($data, 'taxonomies'));
+            ->taxonomies(Arr::get($data, 'taxonomies'))
+            ->requiresSlugs(array_get($data, 'slugs', true))
+            ->titleFormats(array_get($data, 'title_format'))
+            ->originBehavior(array_get($data, 'origin_behavior', 'select'))
+            ->propagate(array_get($data, 'propagate'))
+            ->previewTargets($this->normalizePreviewTargets(array_get($data, 'preview_targets', [])))
+            ->autosaveInterval(array_get($data, 'autosave'));
 
         if ($dateBehavior = array_get($data, 'date_behavior')) {
             $type

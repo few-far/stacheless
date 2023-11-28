@@ -20,7 +20,7 @@ class CreateStatamicEntriesTable extends Migration
             $table->uuid('origin_id')->nullable();
             $table->boolean('published')->default(false);
             $table->string('blueprint')->nullable();
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->string('uri')->nullable()->index();
             $table->string('date')->nullable();
             $table->string('collection');
