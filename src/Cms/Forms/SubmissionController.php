@@ -102,18 +102,28 @@ class SubmissionController extends Controller
         return [
             'form_id' => $form->id(),
             'form_title' => $form->get('title'),
-            'field_rows' => collect($rows)->map(function ($field) use ($values) {
-                $field_values = $field->toArray();
-
-                return [
-                    'name' => $this->get($field_values, 'name'),
-                    'label' => $this->get($field_values, 'label'),
-                    'value' => $this->get($values, $this->get($field_values, 'name')),
-                ];
+            'field_rows' => collect($rows)->map(function ($field, $index) use ($form, $rows, $values) {
+                return $this->mapFieldRow($form, $rows, $values, $index, $field);
             }),
             'meta_rows' => collect($this->get($values, '_meta'))->map(function ($value, $name) {
                 return compact('value', 'name');
             }),
+        ];
+    }
+
+    /**
+     * Override to create your own bespoke behaviour for creating rows.
+     *
+     * @return array
+     */
+    public function mapFieldRow($form, $rows, $values, $index, $field)
+    {
+        $field_values = $field->toArray();
+
+        return [
+            'name' => $this->get($field_values, 'name'),
+            'label' => $this->get($field_values, 'label'),
+            'value' => $this->get($values, $this->get($field_values, 'name') ?? ''),
         ];
     }
 
