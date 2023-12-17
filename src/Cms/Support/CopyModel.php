@@ -85,6 +85,10 @@ class CopyModel
             $fieldValue = $value;
         }
 
+        if (!$value) {
+            return null;
+        }
+
         if ($type === 'html') {
             if ($this->useMarkdown) {
                 $fieldValue = preg_replace('/_(.+?)_/', '<em>$1</em>', $fieldValue);
