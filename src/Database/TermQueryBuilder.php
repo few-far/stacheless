@@ -100,6 +100,12 @@ class TermQueryBuilder extends EloquentQueryBuilder
         }
 
         if ($column === 'id') {
+            if (empty($values)) {
+                $this->builder->whereIn('id', $values, $boolean);
+
+                return $this;
+            }
+
             $termsByTaxonomy = collect($values)
                 ->map(function ($value) {
                     $segments = explode('::', $value);
