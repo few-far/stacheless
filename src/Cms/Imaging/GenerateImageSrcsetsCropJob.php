@@ -43,7 +43,7 @@ class GenerateImageSrcsetsCropJob implements ShouldQueue
     /**
      * Handle the events.
      */
-    public function handle(AssetRepository $repository, GenerateImageSrcsets $generator)
+    public function handle(AssetRepository $repository, GeneratesCrops $generator)
     {
         /** @var \Statamic\Assets\Asset */
         $asset = $repository->findNoCache($this->handle);

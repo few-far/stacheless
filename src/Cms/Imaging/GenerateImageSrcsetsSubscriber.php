@@ -11,13 +11,6 @@ use Statamic\Events\AssetUploaded;
 class GenerateImageSrcsetsSubscriber
 {
     /**
-     * Create an instance of the subscriber.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Register the listeners for the subscriber.
      */
     public function subscribe(Dispatcher $events)
@@ -39,6 +32,6 @@ class GenerateImageSrcsetsSubscriber
         /** @var \Statamic\Assets\Asset */
         $asset = app(AssetRepository::class)->findNoCache($event->asset->id());
 
-        GenerateImageSrcsetsJob::dispatchIf(app(GenerateImageSrcsets::class)->canGenerateCrops($asset), $asset);
+        GenerateImageSrcsetsJob::dispatchIf(app(GeneratesCrops::class)->canGenerateCrops($asset), $asset);
     }
 }

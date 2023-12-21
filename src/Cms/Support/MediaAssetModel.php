@@ -2,6 +2,7 @@
 
 namespace FewFar\Stacheless\Cms\Support;
 
+use FewFar\Stacheless\Cms\Imaging\GeneratesCrops;
 use FewFar\Stacheless\Cms\Support\Concerns\BuildsModels;
 use Illuminate\Support\Arr;
 use Statamic\Contracts\Assets\Asset;
@@ -69,39 +70,10 @@ class MediaAssetModel
 
         $dimensions = $this->asset->dimensions();
 
-        $max_width = min(2500, $dimensions[0]);
-        $breakpoint_count = intval(ceil($max_width / 250));
-
-        /** @var \League\Glide\Server */
-        $glide = app(\League\Glide\Server::class);
-        $glide->setCachePathPrefix(ImageGenerator::assetCachePathPrefix($this->asset).'/'.$this->asset->folder());
-
-        $paths = collect(range(1, $breakpoint_count))
-            ->keyBy(fn ($n) => $n)
-            ->map(fn ($n) => $glide->getCachePath($this->asset->basename(), [
-                'w' => min($max_width, $n * 250),
-                'fm' => 'webp',
-                'fit' => '',
-                // 'q' => 100,
-            ]))
-
-            ->map(fn ($path) => $this->toPublicPath($path));
-
-        $images = $paths
-            ->map(fn ($path, $n) => [
-                'width' => min($max_width, $n * 250),
-                'src' => $path,
-                'srcset' => collect([1, 2])
-                    ->map(fn ($x) => ($paths->get(($x * $n) ?? $paths->last()) . ' ' . $x . 'x'))
-                    ->implode(', ')
-            ])
-            ->values();
-
         return [
             'image' => [
                 'sources' => [
-                    'step' => 250,
-                    'images' => $images,
+                    'images' => app(GeneratesCrops::class)->model($this->asset),
                 ],
                 'src' => $this->asset->url(),
                 'alt' => $this->asset->get('alt'),

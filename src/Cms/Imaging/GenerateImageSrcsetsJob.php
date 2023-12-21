@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 use Statamic\Contracts\Assets\Asset;
 use Statamic\Contracts\Assets\AssetRepository;
 
@@ -46,7 +47,7 @@ class GenerateImageSrcsetsJob implements ShouldQueue
     /**
      * Handle the events.
      */
-    public function handle(AssetRepository $repository, GenerateImageSrcsets $generator)
+    public function handle(AssetRepository $repository, GeneratesCrops $generator)
     {
         /** @var \Statamic\Assets\Asset */
         $asset = $repository->findNoCache($this->handle);

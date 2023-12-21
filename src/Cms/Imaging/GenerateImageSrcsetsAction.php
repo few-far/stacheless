@@ -24,8 +24,8 @@ class GenerateImageSrcsetsAction extends Action
 
     public function run($items, $values)
     {
-        /** @var GenerateImageSrcsets */
-        $generator = app(GenerateImageSrcsets::class);
+        /** @var GeneratesCrops */
+        $generator = app(GeneratesCrops::class);
 
         foreach ($items->whereInstanceOf(Asset::class) as $asset) {
             GenerateImageSrcsetsJob::dispatchIf($generator->canGenerateCrops($asset), $asset);
