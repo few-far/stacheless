@@ -5,7 +5,6 @@ namespace FewFar\Stacheless\Cms;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Statamic\Facades\CP\Nav;
 use Statamic\Statamic;
 
 class CmsServiceProvider extends ServiceProvider
@@ -86,14 +85,18 @@ class CmsServiceProvider extends ServiceProvider
 
     protected function boot_CpNavigation()
     {
-        Nav::extend(function ($nav) {
-            $nav->remove('Top Level');
+        $this->app->extend(\Statamic\CP\Navigation\Nav::class, function ($nav) {
+            $nav->extend(function ($nav) {
+                $nav->remove('Top Level');
 
-            $nav->findOrCreate('Content', 'Collections')
-                ->route('collections.show', 'pages');
+                $nav->findOrCreate('Content', 'Collections')
+                    ->route('collections.show', 'pages');
 
-            $nav->findOrCreate('Content', 'Globals')
-                ->route('globals.update', 'site_settings');
+                $nav->findOrCreate('Content', 'Globals')
+                    ->route('globals.update', 'site_settings');
+            });
+
+            return $nav;
         });
     }
 }
