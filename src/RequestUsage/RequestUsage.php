@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Statamic\Contracts\Assets\AssetRepository;
 use Statamic\Contracts\Entries\EntryRepository;
 
-class RequestUsage
+class RequestUsage implements RecordsUsage
 {
     /**
      * Cached usage map from previous requests.
@@ -32,35 +32,42 @@ class RequestUsage
     /**
      * Key for this current request.
      *
-     * @var \FewFar\Stacheless\Config
+     * @var string
      */
     protected $key;
 
     /**
-     * Package config.
-     *
-     * @var \Statamic\Contracts\Assets\AssetRepository
-     */
-    protected $assets;
-
-    /**
-     * Entry Repostory
-     *
-     * @var \Statamic\Contracts\Entries\EntryRepository
-     */
-    protected $entry;
-
-    /**
      * Creates an instance of the class.
      *
-     * @param  \FewFar\Stacheless\Config  $config
      * @return void
      */
-    public function __construct(Config $config, EntryRepository $entries, AssetRepository $assets)
+    public function __construct(
+        protected Config $config,
+        protected EntryRepository $entries,
+        protected AssetRepository $assets,
+    )
     {
         $this->config = $config;
         $this->entries = $entries;
-        $this->assert = $assets;
+        $this->assets = $assets;
+    }
+
+    /**
+     * Empties the cache. Useful when used with Laravel Octane.
+     */
+    public function flush()
+    {
+        $this->key = null;
+
+        $this->cached_usage = [
+            'assets' => [],
+            'entries' => [],
+        ];
+
+        $this->usage = [
+            'assets' => [],
+            'entries' => [],
+        ];
     }
 
     /**
@@ -150,7 +157,7 @@ class RequestUsage
             ->whereIn('id', $asset_ids)
             ->get()
             ->each(function ($asset) {
-                $this->assets->storeInCache($asset->id());
+                $this->assets->storeInCache($asset);
             });
     }
 
@@ -173,11 +180,13 @@ class RequestUsage
 
     /**
      * Compares the current usage and stores to database if different from cached.
-     *
-     * @return void
      */
     public function save()
     {
+        if (!$this->key) {
+            return;
+        }
+
         $sorted_usage = [
             'assets' => collect($this->usage['assets'])->keys()->sort()->all(),
             'entries' => collect($this->usage['entries'])->keys()->sort()->all(),
@@ -186,5 +195,14 @@ class RequestUsage
         if ($sorted_usage !== $this->cached_usage) {
             $this->storeUsage($sorted_usage);
         }
+    }
+
+    /**
+     * Saves the current usage and clears the usage cache.
+     */
+    public function saveAndFlush()
+    {
+        $this->save();
+        $this->flush();
     }
 }

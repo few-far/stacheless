@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Statamic\Facades\Entry;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\Site;
-use FewFar\Stacheless\RequestUsage\RequestUsage;
+use FewFar\Stacheless\RequestUsage\RecordsUsage;
 use Statamic\Http\Controllers\FrontendController as StatamicController;
 
 class FrontendController extends StatamicController
@@ -23,7 +23,7 @@ class FrontendController extends StatamicController
     {
         try {
             $entry = $this->findEntry($request);
-            app(RequestUsage::class)->load($entry->id());
+            app(RecordsUsage::class)->load($entry->id());
             return $entry;
         } catch (NotFoundHttpException $ex) {
             $response = $this->handleNotFound($request);
