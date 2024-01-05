@@ -18,7 +18,7 @@
         }
     },
     "require-dev": {
-        "statamic/cms": "4.32.0",
+        "statamic/cms": "4.42.1",
         "orchestra/testbench": "^8",
         "pestphp/pest": "^2.24",
         "pestphp/pest-plugin-laravel": "^2.2"

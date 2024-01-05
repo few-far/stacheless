@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: ghcr.io/few-far/docker-images/statamic-php8.2.3-alpine3.17:1.7.2
+    image: ghcr.io/few-far/docker-images/statamic:1.1-php-8.3.1
     environment:
       SKIP_APP_CACHE: "true"
     volumes:
