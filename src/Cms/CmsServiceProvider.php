@@ -92,8 +92,6 @@ class CmsServiceProvider extends ServiceProvider
         ], 'stacheless-resources');
 
         $this->boot_CpStatamicBooted();
-
-        $this->boot_CpNavigation();
     }
 
     protected function boot_CpStatamicBooted()
