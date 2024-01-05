@@ -52,6 +52,28 @@ class CmsServiceProvider extends ServiceProvider
         foreach ($this->composers as $key => $value) {
             View::composer($key, $value);
         }
+
+        $this->registerCpNavCustomisation();
+    }
+
+    /**
+     * Slight clean-up of the Statamic default navigation for a quicker UX.
+     */
+    public function registerCpNavCustomisation()
+    {
+        $this->app->extend(\Statamic\CP\Navigation\Nav::class, function ($nav) {
+            $nav->extend(function ($nav) {
+                $nav->remove('Top Level');
+
+                $nav->findOrCreate('Content', 'Collections')
+                    ->route('collections.show', 'pages');
+
+                $nav->findOrCreate('Content', 'Globals')
+                    ->route('globals.update', 'site_settings');
+            });
+
+            return $nav;
+        });
     }
 
     /**
@@ -80,23 +102,6 @@ class CmsServiceProvider extends ServiceProvider
             $this->app->bind(\Statamic\Contracts\Assets\Asset::class, \FewFar\Stacheless\Cms\MonkeyPatch\Asset::class);
             $this->app->bind(\Statamic\Contracts\Entries\Entry::class, \FewFar\Stacheless\Cms\MonkeyPatch\Entry::class);
             $this->app->bind(\Statamic\Contracts\Taxonomies\Term::class, \FewFar\Stacheless\Cms\MonkeyPatch\Term::class);
-        });
-    }
-
-    protected function boot_CpNavigation()
-    {
-        $this->app->extend(\Statamic\CP\Navigation\Nav::class, function ($nav) {
-            $nav->extend(function ($nav) {
-                $nav->remove('Top Level');
-
-                $nav->findOrCreate('Content', 'Collections')
-                    ->route('collections.show', 'pages');
-
-                $nav->findOrCreate('Content', 'Globals')
-                    ->route('globals.update', 'site_settings');
-            });
-
-            return $nav;
         });
     }
 }
