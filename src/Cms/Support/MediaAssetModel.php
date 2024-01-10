@@ -69,18 +69,18 @@ class MediaAssetModel
         }
 
         $dimensions = $this->asset->dimensions();
+        $crops = app(GeneratesCrops::class)->model($this->asset);
 
         return [
             'image' => [
-                'sources' => [
-                    'images' => app(GeneratesCrops::class)->model($this->asset),
-                ],
                 'src' => $this->asset->url(),
                 'alt' => $this->asset->get('alt'),
                 'width' => $dimensions[0],
                 'height' => $dimensions[1],
                 'style' => $this->makeObjectPosition($this->asset),
-            ],
+            ] + (empty($crops) ? [] : [
+                'sources' => [ 'images' => $crops ],
+            ]),
         ];
     }
 }
