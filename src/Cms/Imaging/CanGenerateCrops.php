@@ -21,7 +21,7 @@ trait CanGenerateCrops
             return false;
         }
 
-        if (collect($dimensions)->some(fn ($px) => $px > 6000)) {
+        if (collect($asset->dimensions())->some(fn ($px) => $px > 6000)) {
             return false;
         }
 
