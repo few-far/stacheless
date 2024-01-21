@@ -3,13 +3,15 @@
 namespace FewFar\Stacheless\Cms\Http;
 
 use FewFar\Stacheless\Cms\Redirects\Redirect;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Statamic\Facades\Entry;
-use Statamic\Exceptions\NotFoundHttpException;
-use Statamic\Facades\Site;
 use FewFar\Stacheless\RequestUsage\RecordsUsage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Statamic\Contracts\Entries\Entry as EntryContract;
+use Statamic\Exceptions\NotFoundHttpException;
+use Statamic\Facades\Entry;
+use Statamic\Facades\Site;
 use Statamic\Http\Controllers\FrontendController as StatamicController;
 
 class FrontendController extends StatamicController
@@ -86,10 +88,23 @@ class FrontendController extends StatamicController
 
         $entry = Entry::findByUri($url, $site->handle());
 
-        if (!$entry || $entry->private()) {
-            throw new NotFoundHttpException();
+        if ($this->isHiddenToUser($entry)) {
+            throw new NotFoundHttpException;
         }
 
         return $entry;
+    }
+
+    protected function isHiddenToUser(EntryContract $entry)
+    {
+        if (!$entry->private()) {
+            return false;
+        }
+
+        if (Auth::user(config('statamic.users.guards.cp'))) {
+            return false;
+        }
+
+        return true;
     }
 }
