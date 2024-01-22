@@ -88,7 +88,7 @@ class FrontendController extends StatamicController
 
         $entry = Entry::findByUri($url, $site->handle());
 
-        if ($this->isHiddenToUser($entry)) {
+        if (!$entry || $this->isHiddenToUser($entry)) {
             throw new NotFoundHttpException;
         }
 
