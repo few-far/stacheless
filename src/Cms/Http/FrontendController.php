@@ -74,7 +74,7 @@ class FrontendController extends StatamicController
             'redirect' => ($redirect)->id ?? null,
         ]);
 
-        return (!$redirect) ? null : redirect($redirect->target);
+        return (!$redirect) ? null : redirect($redirect->target, $redirect->code);
     }
 
     protected function findEntry(Request $request)
