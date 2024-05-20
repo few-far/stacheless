@@ -63,14 +63,14 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
             ->sortField(Arr::get($data, 'sort_by'))
             ->sortDirection(Arr::get($data, 'sort_dir'))
             ->taxonomies(Arr::get($data, 'taxonomies'))
-            ->requiresSlugs(array_get($data, 'slugs', true))
-            ->titleFormats(array_get($data, 'title_format'))
-            ->originBehavior(array_get($data, 'origin_behavior', 'select'))
-            ->propagate(array_get($data, 'propagate'))
-            ->previewTargets($this->normalizePreviewTargets(array_get($data, 'preview_targets', [])))
-            ->autosaveInterval(array_get($data, 'autosave'));
+            ->requiresSlugs(Arr::get($data, 'slugs', true))
+            ->titleFormats(Arr::get($data, 'title_format'))
+            ->originBehavior(Arr::get($data, 'origin_behavior', 'select'))
+            ->propagate(Arr::get($data, 'propagate'))
+            ->previewTargets($this->normalizePreviewTargets(Arr::get($data, 'preview_targets', [])))
+            ->autosaveInterval(Arr::get($data, 'autosave'));
 
-        if ($dateBehavior = array_get($data, 'date_behavior')) {
+        if ($dateBehavior = Arr::get($data, 'date_behavior')) {
             $type
                 ->futureDateBehavior($dateBehavior['future'] ?? null)
                 ->pastDateBehavior($dateBehavior['past'] ?? null);
