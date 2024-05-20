@@ -5,7 +5,7 @@ namespace FewFar\Stacheless\Repositories;
 use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Structures\Nav as NavigationContract;
 use Statamic\Contracts\Structures\NavigationRepository as RepositoryContract;
-
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stache;
 
@@ -39,6 +39,11 @@ class NavigationRepository extends BaseRepository implements RepositoryContract
     public function find($id): ?NavigationContract
     {
         return $this->findByHandle($id);
+    }
+
+    public function findOrFail($id): NavigationContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function make(string $handle = null): NavigationContract

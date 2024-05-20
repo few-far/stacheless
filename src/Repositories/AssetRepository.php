@@ -10,6 +10,7 @@ use Statamic\Facades\AssetContainer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Statamic\Assets\AssetCollection;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\YAML;
 
 class AssetRepository extends BaseRepository implements RepositoryContract
@@ -125,6 +126,11 @@ class AssetRepository extends BaseRepository implements RepositoryContract
         }
 
         return $this->findWithCache($asset);
+    }
+
+    public function findOrFail($id): Asset
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     // public function findByUrl(string $url)

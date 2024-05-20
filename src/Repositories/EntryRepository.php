@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Entries\Entry as EntryContract;
 use Statamic\Contracts\Entries\QueryBuilder;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
@@ -149,6 +150,11 @@ class EntryRepository extends BaseRepository implements Contract
         }
 
         return $this->findWithCache($id);
+    }
+
+    public function findOrFail($id): EntryContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function findByUri(string $uri, string $site = null): ?EntryContract

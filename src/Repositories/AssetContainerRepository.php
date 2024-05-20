@@ -6,6 +6,7 @@ use Statamic\Contracts\Assets\AssetContainerRepository as RepositoryContract;
 use Statamic\Contracts\Assets\AssetContainer;
 use Statamic\Facades\YAML;
 use Illuminate\Support\Arr;
+use Statamic\Exceptions\EntryNotFoundException;
 
 class AssetContainerRepository extends BaseRepository implements RepositoryContract
 {
@@ -32,6 +33,17 @@ class AssetContainerRepository extends BaseRepository implements RepositoryContr
     public function find($id): ?AssetContainer
     {
         return parent::findInAll($id);
+    }
+
+    /**
+     * Finds the AssetContainer by handle or fails.
+     *
+     * @param string  $id
+     * @return \Statamic\Contracts\Assets\AssetContainer
+     */
+    public function findOrFail($id): AssetContainer
+    {
+        return parent::findInAll($id) ?? new EntryNotFoundException($id);
     }
 
     /**

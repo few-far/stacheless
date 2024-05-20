@@ -4,6 +4,7 @@ namespace FewFar\Stacheless\Repositories;
 
 use Statamic\Contracts\Globals\GlobalRepository as RepositoryContract;
 use Statamic\Contracts\Globals\GlobalSet as TypeContract;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\YAML;
 use Statamic\Globals\GlobalCollection;
 
@@ -45,6 +46,11 @@ class GlobalSetRepository extends BaseRepository implements RepositoryContract
     public function find($id): ?TypeContract
     {
         return $this->findByHandle($id);
+    }
+
+    public function findOrFail($id): TypeContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function findByHandle($handle): ?TypeContract

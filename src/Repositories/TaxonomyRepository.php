@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Taxonomies\Taxonomy as TypeContract;
 use Statamic\Contracts\Taxonomies\TaxonomyRepository as RepositoryContract;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
@@ -50,6 +51,11 @@ class TaxonomyRepository extends BaseRepository implements RepositoryContract
     public function find($id): ?TypeContract
     {
         return $this->findByHandle($id);
+    }
+
+    public function findOrFail($id): TypeContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function findByHandle($handle): ?TypeContract

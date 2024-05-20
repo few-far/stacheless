@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Statamic\Contracts\Taxonomies\TermRepository as RepositoryContract;
 use Statamic\Contracts\Taxonomies\Term as TypeContract;
 use Statamic\Contracts\Taxonomies\Term;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
@@ -123,6 +124,11 @@ class TermRepository extends BaseRepository implements RepositoryContract
     {
         [$taxonomy, $slug] = explode('::', $id);
         return $this->findWithCache(compact('taxonomy', 'slug'));
+    }
+
+    public function findOrFail($id): TypeContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function query()

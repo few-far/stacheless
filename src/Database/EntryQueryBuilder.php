@@ -58,6 +58,34 @@ class EntryQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
         return parent::where(...func_get_args());
     }
 
+    public function whereStatus(string $status)
+    {
+        if (! in_array($status, ['published', 'draft', 'scheduled', 'expired'])) {
+            throw new \Exception("Invalid status [$status]");
+        }
+
+        if ($status === 'draft') {
+            return $this->where('published', false);
+        }
+
+        $this->where('published', true);
+
+        if ($status === 'scheduled') {
+            $this->where('date', '>', now());
+        } else {
+            $this->where(function ($query) {
+                $query->where('date', null);
+                $query->orWhere('date', '<', now());
+            });
+        }
+
+        if ($status === 'expired') {
+            $this->where('date', 'invalid'); // intentionally trigger no results.
+        }
+
+        return $this;
+    }
+
     public function first()
     {
         if (!($first = $this->builder->select($this->selectableColumns($this->columns))->first())) {

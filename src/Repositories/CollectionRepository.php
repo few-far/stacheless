@@ -7,6 +7,7 @@ use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Entries\Collection as TypeContract;
 use Statamic\Contracts\Entries\CollectionRepository as RepositoryContract;
 use Statamic\Data\StoresScopedComputedFieldCallbacks;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
@@ -89,6 +90,11 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
     public function find($id): ?TypeContract
     {
         return parent::findInAll($id);
+    }
+
+    public function findOrFail($id): TypeContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function findByHandle($handle): ?TypeContract

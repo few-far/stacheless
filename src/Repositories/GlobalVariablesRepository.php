@@ -5,6 +5,7 @@ namespace FewFar\Stacheless\Repositories;
 use Illuminate\Support\Arr;
 use Statamic\Contracts\Globals\GlobalVariablesRepository as RepositoryContract;
 use Statamic\Contracts\Globals\Variables as TypeContract;
+use Statamic\Exceptions\EntryNotFoundException;
 use Statamic\Facades\YAML;
 use Statamic\Globals\Variables;
 use Statamic\Globals\VariablesCollection;
@@ -65,6 +66,11 @@ class GlobalVariablesRepository extends BaseLocaleRepository implements Reposito
             'handle' => Arr::get($parts, 0),
             'site' => Arr::get($parts, 1),
         ]);
+    }
+
+    public function findOrFail($id): TypeContract
+    {
+        return $this->find($id) ?? new EntryNotFoundException($id);
     }
 
     public function whereSet($handle): VariablesCollection
