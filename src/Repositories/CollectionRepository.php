@@ -133,6 +133,10 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
     {
     }
 
+    public function updateEntryParent(TypeContract $collection, $ids = null)
+    {
+    }
+
     public function whereStructured(): IlluminateCollection
     {
         return $this->all()->filter->hasStructure()->values();
