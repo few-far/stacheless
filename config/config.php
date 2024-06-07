@@ -119,4 +119,16 @@ return [
         'cache_key_prefix' => env('STACHELESS_REQUEST_USAGE_CACHE_KEY_PREFIX', 'request_usage::'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | CMS Functionality
+    |--------------------------------------------------------------------------
+    |
+    | We wrongly added the CMS code to this project, it is now deprecated and
+    | will be removed in the future. For now you can disable it with config.
+    |
+    */
+    'cms_disabled' => env('STACHELESS_CMS_DISABLED', false),
+
+
 ];

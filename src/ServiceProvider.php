@@ -90,7 +90,10 @@ class ServiceProvider extends AddonServiceProvider
     {
         $this->config = $this->app->get(Config::class);
 
-        $this->app->register(CmsServiceProvider::class);
+        if (!$this->config->get('cms_disabled')) {
+            $this->app->register(CmsServiceProvider::class);
+        }
+
         $this->app->register(RequestUsageServiceProvider::class);
     }
 
