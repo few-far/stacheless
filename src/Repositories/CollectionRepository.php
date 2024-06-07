@@ -123,10 +123,40 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
         return $this->handles()->contains($handle);
     }
 
+    protected function updateEntryUri(\Statamic\Contracts\Entries\Entry $entry)
+    {
+        $entry->set('parent', $entry->parent()?->id());
+        $entry->save();
+    }
+
     public function updateEntryUris(TypeContract $collection, $ids = null)
     {
-        Entry::whereCollection($collection->handle())
-            ->each->save();
+        // If we have been explicit IDs we can process them directly.
+        if (filled($ids)) {
+            collect($ids)
+                ->map(fn ($id) => Entry::find($id))
+                ->filter()
+                ->each(function ($entry) {
+                    $this->updateEntryUri($entry);
+                });
+        }
+
+        // Otherwise, if we need to update the whole collection, we need to
+        // check if it is structured or not
+        else if (!$collection->hasStructure()) {
+            foreach ($collection->queryEntries()->get() as $entry) {
+                $this->updateEntryUri($entry);
+            }
+        }
+
+        else {
+            /** @var \Statamic\Structures\CollectionTree */
+            $tree = $collection->structure()->in(Site::default());
+
+            foreach ($tree->pages()->all() as $page) {
+                $this->updateEntryUri($page->entry());
+            }
+        }
     }
 
     public function updateEntryOrder(TypeContract $collection, $ids = null)
