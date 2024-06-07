@@ -153,7 +153,7 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
             /** @var \Statamic\Structures\CollectionTree */
             $tree = $collection->structure()->in(Site::default());
 
-            foreach ($tree->pages()->all() as $page) {
+            foreach ($tree->pages()->flattenedPages() as $page) {
                 $this->updateEntryUri($page->entry());
             }
         }
