@@ -170,7 +170,9 @@ class RequestUsage implements RecordsUsage
     public function handleEvent(TypeRequested $event)
     {
         if ($event->type instanceof \Statamic\Contracts\Assets\Asset) {
-            $this->usage['assets'][$event->type->getModel()->id] = $event->type;
+            // In some instances, during upload, there is an Asset but it is
+            // not yet in the database so no model exist.
+            $this->usage['assets'][$event->type->getModel()?->id ?? ''] = $event->type;
         }
 
         else if ($event->type instanceof \Statamic\Contracts\Entries\Entry) {
@@ -188,8 +190,8 @@ class RequestUsage implements RecordsUsage
         }
 
         $sorted_usage = [
-            'assets' => collect($this->usage['assets'])->keys()->sort()->all(),
-            'entries' => collect($this->usage['entries'])->keys()->sort()->all(),
+            'assets' => collect($this->usage['assets'])->keys()->filter()->sort()->all(),
+            'entries' => collect($this->usage['entries'])->keys()->filter()->sort()->all(),
         ];
 
         if ($sorted_usage !== $this->cached_usage) {
