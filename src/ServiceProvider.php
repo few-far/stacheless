@@ -69,8 +69,6 @@ class ServiceProvider extends AddonServiceProvider
     {
         $origin = __DIR__.'/../config/config.php';
 
-        $this->mergeConfigFrom($origin, $this->config->configKey());
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 $origin => config_path(str_replace('.', '/', $this->config->configKey())),
@@ -83,12 +81,15 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon()
     {
         $this->registerTypes();
-
     }
 
     public function register()
     {
+        $origin = __DIR__.'/../config/config.php';
         $this->config = $this->app->get(Config::class);
+
+        $this->mergeConfigFrom($origin, $this->config->configKey());
+
 
         if (!$this->config->get('cms_disabled')) {
             $this->app->register(CmsServiceProvider::class);
