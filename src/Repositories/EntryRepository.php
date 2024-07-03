@@ -58,6 +58,8 @@ class EntryRepository extends BaseRepository implements Contract
             $entry->date(Carbon::parse($model->date));
         }
 
+        $entry->syncOriginal();
+
         return $entry;
     }
 
