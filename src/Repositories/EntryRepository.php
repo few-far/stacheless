@@ -12,6 +12,7 @@ use Illuminate\Support\Collection as IlluminateCollection;
 use Statamic\Contracts\Entries\Entry as EntryContract;
 use Statamic\Contracts\Entries\QueryBuilder;
 use Statamic\Exceptions\EntryNotFoundException;
+use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 
@@ -231,5 +232,18 @@ class EntryRepository extends BaseRepository implements Contract
         return $items->map(function ($item) {
             return $this->substitutionsById[$item->id()] ?? $item;
         });
+    }
+
+    public function updateUris($collection, $ids = null)
+    {
+        Collection::updateEntryUris($collection, $ids);
+    }
+
+    public function updateOrders($collection, $ids = null)
+    {
+    }
+
+    public function updateParents($collection, $ids = null)
+    {
     }
 }

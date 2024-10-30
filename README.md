@@ -10,6 +10,8 @@ Unfortunately, this is difficult to avoid but this package is frequently updated
 
 | Stacheless    | Statamic      |
 | ------------- | ------------- |
+| 1.5.0         | 5.35.0        |
+| ...           |               |
 | 1.2.0-1.2.8   | 4.42.1        |
 | 1.0.0-1.1.0   | 4.39.0        |
 | 0.1.19        | 4.23.2        |
