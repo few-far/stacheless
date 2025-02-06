@@ -234,6 +234,17 @@ class EntryRepository extends BaseRepository implements Contract
         });
     }
 
+    public function updateUri(\Statamic\Contracts\Entries\Entry $entry)
+    {
+        $entry->set('parent', $entry->parent()?->id());
+
+        if (! $model = $this->findModel($entry->id())) {
+            return;
+        }
+
+        $model->update([ 'uri' => $entry->uri() ]);
+    }
+
     public function updateUris($collection, $ids = null)
     {
         Collection::updateEntryUris($collection, $ids);

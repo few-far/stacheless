@@ -125,8 +125,7 @@ class CollectionRepository extends BaseRepository implements RepositoryContract
 
     protected function updateEntryUri(\Statamic\Contracts\Entries\Entry $entry)
     {
-        $entry->set('parent', $entry->parent()?->id());
-        $entry->save();
+        \Statamic\Facades\Entry::updateUri($entry);
     }
 
     public function updateEntryUris(TypeContract $collection, $ids = null)
