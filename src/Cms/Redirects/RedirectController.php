@@ -24,8 +24,9 @@ class RedirectController extends Controller
                     Column::make('updated_at')->label('Updated')->visible(false),
                 ],
                 'items' => Redirect::all()->map(function ($redirect) {
-                    $model = $redirect->only('enabled', 'source_type', 'source', 'target', 'code');
+                    $model = $redirect->only('id', 'enabled', 'source_type', 'source', 'target', 'code');
 
+                    $model['id'] = $redirect->id;
                     $model['created_at'] = $redirect->created_at->format('Y-m-d h:i:s');
                     $model['updated_at'] = $redirect->updated_at->format('Y-m-d h:i:s');
                     $model['edit_url'] = cp_route('redirects.edit', $redirect);
