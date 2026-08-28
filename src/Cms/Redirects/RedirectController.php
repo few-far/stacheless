@@ -131,6 +131,8 @@ class RedirectController extends Controller
         $values = $fields->process()->values();
 
         $redirect = Redirect::make($values->toArray());
+        $redirect->enabled = boolval($redirect->enabled);
+
         $redirect->id = Str::uuid();
         $redirect->save();
 

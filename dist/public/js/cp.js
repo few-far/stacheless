@@ -104,7 +104,7 @@
       saved(response) {
         const redirect = lodash.get(response, "data.redirect");
         if (redirect) {
-          window.location = redirect;
+          this.$nextTick(() => window.location = redirect);
         }
       }
     }
